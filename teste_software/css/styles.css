@@ -1,0 +1,624 @@
+/* 
+ * Teste de Software - Estilos Personalizados
+ * Professor Leandro Rodrigues
+ * Sistema de Atividades Educacionais
+ */
+
+/* === VARIÁVEIS CSS === */
+:root {
+    --primary-color: #0d6efd;
+    --secondary-color: #6c757d;
+    --success-color: #198754;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --info-color: #0dcaf0;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+    
+    --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --gradient-success: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --gradient-warning: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    
+    --shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    --shadow-md: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    --shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+    
+    --border-radius: 0.75rem;
+    --border-radius-lg: 1rem;
+    --transition: all 0.3s ease;
+}
+
+/* === RESET E BASE === */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--dark-color);
+    background-color: #f0f2f5;
+}
+
+/* === LOADING SCREEN === */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.loading-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loading-content {
+    text-align: center;
+    color: white;
+}
+
+.loading-content .spinner-border {
+    width: 3rem;
+    height: 3rem;
+    border-width: 0.3em;
+}
+
+/* === SISTEMA DE TELAS === */
+.screen {
+    display: none;
+    min-height: 100vh;
+    animation: fadeIn 0.5s ease;
+}
+
+.screen.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* === HEADER SECTION === */
+.header-section {
+    background: var(--gradient-primary);
+    padding: 4rem 0 2rem;
+    margin-bottom: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.header-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+    background-size: 50px 50px;
+}
+
+.header-section .container {
+    position: relative;
+    z-index: 2;
+}
+
+.header-section h1 {
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.header-section .lead {
+    font-size: 1.25rem;
+    font-weight: 300;
+}
+
+/* === CARDS EDUCATIVOS === */
+.education-card {
+    background: white;
+    border: none;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+    overflow: hidden;
+    height: 100%;
+}
+
+.education-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.education-card .card-header {
+    background: var(--light-color);
+    border-bottom: 2px solid #e9ecef;
+    padding: 1.5rem;
+    border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+}
+
+.education-card .card-header h4 {
+    margin: 0;
+    font-weight: 600;
+    color: var(--dark-color);
+}
+
+.education-card .card-body {
+    padding: 1.5rem;
+}
+
+.education-card .list-group-item {
+    border: none;
+    padding: 0.75rem 0;
+    background: transparent;
+    font-size: 0.95rem;
+}
+
+.education-card .list-group-item:not(:last-child) {
+    border-bottom: 1px solid #f1f3f4;
+}
+
+/* === CONCEITOS E TIPOS === */
+.concept-item, .test-type, .benefit-item {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f1f3f4;
+    transition: var(--transition);
+}
+
+.concept-item:last-child, .test-type:last-child, .benefit-item:last-child {
+    border-bottom: none;
+}
+
+.concept-item:hover, .test-type:hover, .benefit-item:hover {
+    background-color: #f8f9fa;
+    padding-left: 0.5rem;
+    border-radius: 0.5rem;
+}
+
+/* === SEÇÃO INICIAR ATIVIDADE === */
+.start-activity-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    border: 2px dashed #dee2e6;
+    transition: var(--transition);
+}
+
+.start-activity-section:hover {
+    border-color: var(--primary-color);
+    background: linear-gradient(135deg, #e7f3ff 0%, #ffffff 100%);
+}
+
+/* === CARD DE IDENTIFICAÇÃO === */
+.identification-card {
+    background: white;
+    border: none;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    margin-top: 2rem;
+}
+
+.identification-card .card-header {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 2rem;
+    text-align: center;
+}
+
+.identification-card .card-body {
+    padding: 2rem;
+}
+
+/* === PROGRESS SECTION === */
+.progress-section {
+    background: white;
+    padding: 1.5rem 0;
+    box-shadow: var(--shadow-sm);
+}
+
+.progress {
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+.progress-bar {
+    transition: width 0.5s ease;
+}
+
+/* === CARDS DE CENÁRIO === */
+.scenario-card {
+    display: none;
+    background: white;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    margin-bottom: 2rem;
+    overflow: hidden;
+    animation: slideInUp 0.5s ease;
+}
+
+.scenario-card.active {
+    display: block;
+}
+
+.scenario-card.reflection {
+    border: 2px solid var(--info-color);
+}
+
+@keyframes slideInUp {
+    from { 
+        opacity: 0; 
+        transform: translateY(30px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+/* === HEADER DO CENÁRIO === */
+.scenario-header {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.scenario-number {
+    background: rgba(255, 255, 255, 0.2);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    backdrop-filter: blur(10px);
+}
+
+.scenario-title h4 {
+    margin: 0;
+    font-weight: 600;
+}
+
+.scenario-title p {
+    margin: 0;
+    opacity: 0.9;
+}
+
+/* === CONTEÚDO DO CENÁRIO === */
+.scenario-content {
+    padding: 2rem;
+}
+
+.context-box, .question-box {
+    background: #f8f9fa;
+    border-left: 4px solid var(--primary-color);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+}
+
+.question-box {
+    border-left-color: var(--success-color);
+    background: #f0fff4;
+}
+
+.context-box h6, .question-box h6 {
+    color: var(--dark-color);
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.scenario-content textarea {
+    border-radius: var(--border-radius);
+    border: 2px solid #e9ecef;
+    padding: 1rem;
+    transition: var(--transition);
+    resize: vertical;
+    min-height: 150px;
+}
+
+.scenario-content textarea:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* === AÇÕES DO CENÁRIO === */
+.scenario-actions {
+    border-top: 1px solid #e9ecef;
+    padding: 1.5rem 2rem;
+    text-align: right;
+    background: #fafbfc;
+}
+
+.scenario-actions .btn {
+    border-radius: var(--border-radius);
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+/* === TELA DE RESULTADOS === */
+.results-header .success-icon {
+    font-size: 4rem;
+}
+
+.feedback-section {
+    margin-bottom: 2rem;
+}
+
+.feedback-card {
+    background: white;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    border-left: 5px solid var(--success-color);
+}
+
+.feedback-card.scenario-feedback {
+    border-left-color: var(--primary-color);
+}
+
+.feedback-card.reflection-feedback {
+    border-left-color: var(--info-color);
+}
+
+.feedback-header {
+    background: var(--light-color);
+    padding: 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.feedback-content {
+    padding: 1.5rem;
+}
+
+.example-item {
+    background: #f8f9fa;
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    border-left: 3px solid var(--success-color);
+}
+
+.example-item:last-child {
+    margin-bottom: 0;
+}
+
+/* === COMPONENTES UTILITÁRIOS === */
+.form-control, .form-select {
+    border-radius: var(--border-radius);
+    border: 2px solid #e9ecef;
+    transition: var(--transition);
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+.btn {
+    border-radius: var(--border-radius);
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: var(--transition);
+    border: none;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-primary {
+    background: var(--gradient-primary);
+    border: none;
+}
+
+.btn-success {
+    background: var(--gradient-success);
+    border: none;
+}
+
+.alert {
+    border-radius: var(--border-radius);
+    border: none;
+    padding: 1.25rem;
+}
+
+.badge {
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* === RESPONSIVIDADE === */
+@media (max-width: 768px) {
+    .header-section {
+        padding: 2rem 0 1rem;
+    }
+    
+    .header-section h1 {
+        font-size: 2rem;
+    }
+    
+    .scenario-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+    
+    .scenario-number {
+        width: 50px;
+        height: 50px;
+        font-size: 1.25rem;
+    }
+    
+    .scenario-content {
+        padding: 1.5rem;
+    }
+    
+    .scenario-actions {
+        padding: 1rem;
+        text-align: center;
+    }
+    
+    .scenario-actions .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+    
+    .scenario-actions .btn:last-child {
+        margin-bottom: 0;
+    }
+    
+    .identification-card .card-body,
+    .identification-card .card-header {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .container-fluid {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    .education-card .card-header,
+    .education-card .card-body {
+        padding: 1rem;
+    }
+    
+    .start-activity-section {
+        padding: 2rem 1rem;
+    }
+    
+    .final-actions .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* === ANIMAÇÕES ADICIONAIS === */
+.btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease;
+}
+
+.btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+/* === SCROLLBAR PERSONALIZADA === */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+    transition: var(--transition);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #0b5ed7;
+}
+
+/* === ESTADOS DE VALIDAÇÃO === */
+.is-invalid {
+    border-color: var(--danger-color) !important;
+}
+
+.is-valid {
+    border-color: var(--success-color) !important;
+}
+
+.invalid-feedback {
+    display: block;
+    color: var(--danger-color);
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* === EFEITOS ESPECIAIS === */
+.education-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: left 0.5s ease;
+}
+
+.education-card:hover::before {
+    left: 100%;
+}
+
+.scenario-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.scenario-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 20px 20px 0;
+    border-color: transparent var(--primary-color) transparent transparent;
+    opacity: 0.1;
+}
+
+/* === PRINT STYLES === */
+@media print {
+    .btn, .scenario-actions, .progress-section {
+        display: none !important;
+    }
+    
+    .scenario-card {
+        display: block !important;
+        break-inside: avoid;
+        margin-bottom: 2rem;
+    }
+    
+    body {
+        background: white !important;
+    }
+}

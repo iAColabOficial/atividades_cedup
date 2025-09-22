@@ -1,0 +1,315 @@
+{
+  "scenarios": [
+    {
+      "id": "techcorp_2024",
+      "name": "TechCorp Soluções - 2024",
+      "company": "TechCorp Soluções Ltda",
+      "period": "Janeiro-Março 2024",
+      "description": "Cenário com 5 processos seletivos simultâneos para diferentes áreas da empresa",
+      
+      "vagas": [
+        {
+          "id": "V001",
+          "cargo": "Desenvolvedor Senior",
+          "salario_base": 8000.00,
+          "departamento": "Tecnologia",
+          "nivel": "Senior",
+          "urgencia": "Alta",
+          "data_abertura": "2024-01-15",
+          "prazo_limite": "2024-02-15",
+          "status": "Em andamento",
+          "requisitos": "Java, Spring, 5+ anos",
+          "qtd_candidatos_esperados": 25
+        },
+        {
+          "id": "V002", 
+          "cargo": "Analista de Marketing",
+          "salario_base": 4500.00,
+          "departamento": "Marketing",
+          "nivel": "Pleno",
+          "urgencia": "Media",
+          "data_abertura": "2024-01-20",
+          "prazo_limite": "2024-03-01",
+          "status": "Aberta",
+          "requisitos": "Marketing Digital, Google Ads",
+          "qtd_candidatos_esperados": 40
+        },
+        {
+          "id": "V003",
+          "cargo": "Assistente Administrativo",
+          "salario_base": 2200.00,
+          "departamento": "Administrativo", 
+          "nivel": "Junior",
+          "urgencia": "Baixa",
+          "data_abertura": "2024-01-25",
+          "prazo_limite": "2024-03-15",
+          "status": "Aberta",
+          "requisitos": "Excel, Organizacao",
+          "qtd_candidatos_esperados": 60
+        },
+        {
+          "id": "V004",
+          "cargo": "Gerente de Vendas",
+          "salario_base": 6500.00,
+          "departamento": "Comercial",
+          "nivel": "Senior",
+          "urgencia": "Alta",
+          "data_abertura": "2024-02-01",
+          "prazo_limite": "2024-02-28",
+          "status": "Em andamento",
+          "requisitos": "Gestao, Vendas B2B, Lideranca",
+          "qtd_candidatos_esperados": 15
+        },
+        {
+          "id": "V005",
+          "cargo": "Estagiario de RH",
+          "salario_base": 1200.00,
+          "departamento": "Recursos Humanos",
+          "nivel": "Estagio",
+          "urgencia": "Baixa", 
+          "data_abertura": "2024-02-05",
+          "prazo_limite": "2024-03-20",
+          "status": "Aberta",
+          "requisitos": "Cursando RH, Comunicacao",
+          "qtd_candidatos_esperados": 35
+        }
+      ],
+
+      "candidatos": [
+        {
+          "id": "C001",
+          "nome": "Maria Silva Santos",
+          "vaga_id": "V001",
+          "fonte_recrutamento": "LinkedIn",
+          "data_inscricao": "2024-01-16",
+          "pontuacao_curriculo": 85,
+          "pontuacao_teste_tecnico": 78,
+          "pontuacao_entrevista": 92,
+          "experiencia_anos": 6,
+          "pretensao_salarial": 8500.00,
+          "status": "Aprovado"
+        },
+        {
+          "id": "C002", 
+          "nome": "João Pedro Oliveira",
+          "vaga_id": "V001",
+          "fonte_recrutamento": "InfoJobs",
+          "data_inscricao": "2024-01-18",
+          "pontuacao_curriculo": 75,
+          "pontuacao_teste_tecnico": 65,
+          "pontuacao_entrevista": 70,
+          "experiencia_anos": 4,
+          "pretensao_salarial": 7800.00,
+          "status": "Reprovado"
+        },
+        {
+          "id": "C003",
+          "nome": "Ana Carolina Mendes",
+          "vaga_id": "V002",
+          "fonte_recrutamento": "Indicacao",
+          "data_inscricao": "2024-01-22",
+          "pontuacao_curriculo": 90,
+          "pontuacao_teste_tecnico": 88,
+          "pontuacao_entrevista": 95,
+          "experiencia_anos": 3,
+          "pretensao_salarial": 4800.00,
+          "status": "Aprovado"
+        },
+        {
+          "id": "C004",
+          "nome": "Carlos Eduardo Lima",
+          "vaga_id": "V003",
+          "fonte_recrutamento": "Site da Empresa",
+          "data_inscricao": "2024-01-26",
+          "pontuacao_curriculo": 70,
+          "pontuacao_teste_tecnico": 75,
+          "pontuacao_entrevista": 68,
+          "experiencia_anos": 1,
+          "pretensao_salarial": 2300.00,
+          "status": "Em Analise"
+        },
+        {
+          "id": "C005",
+          "nome": "Fernanda Costa Rocha",
+          "vaga_id": "V004",
+          "fonte_recrutamento": "LinkedIn",
+          "data_inscricao": "2024-02-02",
+          "pontuacao_curriculo": 95,
+          "pontuacao_teste_tecnico": 85,
+          "pontuacao_entrevista": 90,
+          "experiencia_anos": 8,
+          "pretensao_salarial": 7000.00,
+          "status": "Aprovado"
+        },
+        {
+          "id": "C006",
+          "nome": "Ricardo Ferreira Alves",
+          "vaga_id": "V005",
+          "fonte_recrutamento": "Universidade",
+          "data_inscricao": "2024-02-06",
+          "pontuacao_curriculo": 80,
+          "pontuacao_teste_tecnico": 72,
+          "pontuacao_entrevista": 85,
+          "experiencia_anos": 0,
+          "pretensao_salarial": 1200.00,
+          "status": "Aprovado"
+        }
+      ],
+
+      "custos_recrutamento": [
+        {
+          "vaga_id": "V001",
+          "item": "LinkedIn Recruiter",
+          "categoria": "Plataforma",
+          "tipo": "Mensal",
+          "valor": 500.00,
+          "data": "2024-01-15"
+        },
+        {
+          "vaga_id": "V001",
+          "item": "Teste Tecnico Externo",
+          "categoria": "Avaliacao",
+          "tipo": "Por candidato",
+          "valor": 150.00,
+          "data": "2024-01-20"
+        },
+        {
+          "vaga_id": "V002",
+          "item": "InfoJobs Anuncio",
+          "categoria": "Plataforma", 
+          "tipo": "Por vaga",
+          "valor": 200.00,
+          "data": "2024-01-20"
+        },
+        {
+          "vaga_id": "V002",
+          "item": "Consultoria RH",
+          "categoria": "Servico",
+          "tipo": "Por processo",
+          "valor": 800.00,
+          "data": "2024-01-25"
+        },
+        {
+          "vaga_id": "V003",
+          "item": "Site da Empresa",
+          "categoria": "Plataforma",
+          "tipo": "Gratuito",
+          "valor": 0.00,
+          "data": "2024-01-25"
+        },
+        {
+          "vaga_id": "V004",
+          "item": "LinkedIn Recruiter",
+          "categoria": "Plataforma",
+          "tipo": "Mensal",
+          "valor": 500.00,
+          "data": "2024-02-01"
+        },
+        {
+          "vaga_id": "V004",
+          "item": "Headhunter Executivo",
+          "categoria": "Servico",
+          "tipo": "Por contratacao",
+          "valor": 2000.00,
+          "data": "2024-02-05"
+        },
+        {
+          "vaga_id": "V005",
+          "item": "Parceria Universidade",
+          "categoria": "Plataforma",
+          "tipo": "Gratuito",
+          "valor": 0.00,
+          "data": "2024-02-05"
+        }
+      ],
+
+      "tabelas_apoio": {
+        "faixas_salariais": [
+          {
+            "nivel": "Estagio",
+            "salario_min": 800.00,
+            "salario_max": 1500.00,
+            "beneficios": "VT + VR"
+          },
+          {
+            "nivel": "Junior", 
+            "salario_min": 2000.00,
+            "salario_max": 3500.00,
+            "beneficios": "VT + VR + Plano Saude"
+          },
+          {
+            "nivel": "Pleno",
+            "salario_min": 3500.00,
+            "salario_max": 6000.00,
+            "beneficios": "VT + VR + Plano Saude + PLR"
+          },
+          {
+            "nivel": "Senior",
+            "salario_min": 6000.00,
+            "salario_max": 12000.00,
+            "beneficios": "VT + VR + Plano Saude + PLR + Bonus"
+          }
+        ],
+        
+        "fontes_recrutamento": [
+          {
+            "fonte": "LinkedIn",
+            "custo_medio": 500.00,
+            "tempo_medio_dias": 15,
+            "taxa_conversao": 0.35,
+            "qualidade_candidatos": "Alta"
+          },
+          {
+            "fonte": "InfoJobs",
+            "custo_medio": 200.00,
+            "tempo_medio_dias": 20,
+            "taxa_conversao": 0.25,
+            "qualidade_candidatos": "Media"
+          },
+          {
+            "fonte": "Indicacao",
+            "custo_medio": 300.00,
+            "tempo_medio_dias": 10,
+            "taxa_conversao": 0.60,
+            "qualidade_candidatos": "Muito Alta"
+          },
+          {
+            "fonte": "Site da Empresa",
+            "custo_medio": 0.00,
+            "tempo_medio_dias": 25,
+            "taxa_conversao": 0.20,
+            "qualidade_candidatos": "Media"
+          },
+          {
+            "fonte": "Universidade",
+            "custo_medio": 0.00,
+            "tempo_medio_dias": 30,
+            "taxa_conversao": 0.40,
+            "qualidade_candidatos": "Alta"
+          }
+        ],
+
+        "benchmarks_mercado": [
+          {
+            "metrica": "Tempo medio contratacao",
+            "valor": 25,
+            "unidade": "dias",
+            "referencia": "Mercado TI"
+          },
+          {
+            "metrica": "Custo por contratacao",
+            "valor": 1500.00,
+            "unidade": "reais",
+            "referencia": "Mercado Geral"
+          },
+          {
+            "metrica": "Taxa aprovacao",
+            "valor": 0.30,
+            "unidade": "percentual",
+            "referencia": "Industria"
+          }
+        ]
+      }
+    }
+  ]
+}

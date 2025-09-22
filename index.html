@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividades Acadêmicas - Professor Leandro Rodrigues</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 40px;
+            border-radius: 20px 20px 0 0;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        
+        .professor-info {
+            background: rgba(255,255,255,0.1);
+            padding: 15px 30px;
+            border-radius: 25px;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .user-info {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.1);
+            padding: 10px 20px;
+            border-radius: 25px;
+            color: white;
+            backdrop-filter: blur(10px);
+            display: none;
+        }
+        
+        .user-info.show {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logout-btn {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-1px);
+        }
+        
+        .main-content {
+            background: white;
+            border-radius: 0 0 20px 20px;
+            padding: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .welcome-section h2 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        
+        .welcome-section p {
+            color: #6c757d;
+            font-size: 1.1em;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .activities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .activity-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border-left: 5px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .activity-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #3498db, #2980b9);
+        }
+        
+        .activity-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .activity-card.ethics::before {
+            background: linear-gradient(90deg, #e74c3c, #c0392b);
+        }
+        
+        .activity-card.der-quiz::before {
+            background: linear-gradient(90deg, #9b59b6, #8e44ad);
+        }
+        
+        .activity-card.rs-lab::before {
+            background: linear-gradient(90deg, #e67e22, #d35400);
+        }
+        
+        .activity-card.programming::before {
+            background: linear-gradient(90deg, #27ae60, #229954);
+        }
+        
+        .activity-card.networks::before {
+            background: linear-gradient(90deg, #f39c12, #e67e22);
+        }
+        
+        .activity-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .activity-title {
+            font-size: 1.5em;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .activity-description {
+            color: #6c757d;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .activity-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+        
+        .activity-duration {
+            background: #e9ecef;
+            padding: 5px 12px;
+            border-radius: 15px;
+        }
+        
+        .activity-difficulty {
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-weight: 600;
+        }
+        
+        .difficulty-easy {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .difficulty-medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .difficulty-hard {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .activity-btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .activity-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52,152,219,0.3);
+        }
+        
+        .activity-btn:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .activity-btn.ethics {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+        
+        .activity-btn.der-quiz {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        }
+        
+        .activity-btn.rs-lab {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+        }
+        
+        .activity-btn.programming {
+            background: linear-gradient(135deg, #27ae60, #229954);
+        }
+        
+        .activity-btn.networks {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+        }
+        
+        .activity-status {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 5px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+        
+        .status-available {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-coming-soon {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .login-prompt {
+            text-align: center;
+            background: #f8f9fa;
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .login-prompt h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .login-prompt p {
+            color: #6c757d;
+            margin-bottom: 25px;
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn-login {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52,152,219,0.3);
+        }
+        
+        .btn-admin {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            color: rgba(255,255,255,0.8);
+        }
+        
+        .footer p {
+            margin-bottom: 10px;
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .loading-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2.5em;
+            }
+            
+            .main-content {
+                padding: 30px 20px;
+            }
+            
+            .welcome-section h2 {
+                font-size: 2em;
+            }
+            
+            .activities-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .activity-card {
+                padding: 25px;
+            }
+            
+            .auth-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .user-info {
+                position: relative;
+                top: auto;
+                right: auto;
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Informações do usuário logado -->
+        <div class="user-info" id="userInfo">
+            <span id="userName">Usuário</span>
+            <button class="logout-btn" onclick="logout()">Sair</button>
+        </div>
+        
+        <div class="header">
+            <h1>Hub de Atividades</h1>
+            <p>Laboratórios Virtuais e Exercícios Interativos</p>
+            <div class="professor-info">
+                <span>👨‍🏫 Professor Leandro Rodrigues</span>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <!-- Área de boas-vindas -->
+            <div class="welcome-section">
+                <h2>Bem-vindo ao Centro de Atividades</h2>
+                <p>Explore nossos laboratórios virtuais interativos, desenvolvidos para proporcionar experiências práticas e reflexivas em diferentes áreas da tecnologia da informação.</p>
+            </div>
+            
+            <!-- Prompt de login para usuários não autenticados -->
+            <div class="login-prompt" id="loginPrompt">
+                <h3>Acesso Necessário</h3>
+                <p>Para participar das atividades, faça login com sua conta ou crie uma nova conta gratuitamente.</p>
+                <div class="auth-buttons">
+                    <a href="auth/login.html" class="btn-login">Fazer Login / Cadastro</a>
+                    <a href="auth/admin.html" class="btn-login btn-admin">Acesso Administrativo</a>
+                </div>
+            </div>
+            
+            <!-- Grid de atividades -->
+            <div class="activities-grid" id="activitiesGrid" style="display: none;">
+                
+                <!-- Laboratório de Ética -->
+                <div class="activity-card ethics">
+                    <div class="activity-status status-available">Disponível</div>
+                    <div class="activity-icon">⚖️</div>
+                    <div class="activity-title">Laboratório de Decisões Éticas</div>
+                    <div class="activity-description">
+                        Explore dilemas éticos reais da área de TI através de 10 cenários interativos. 
+                        Suas decisões impactarão sua reputação profissional e você receberá feedback 
+                        detalhado sobre cada escolha.
+                    </div>
+                    <div class="activity-meta">
+                        <div class="activity-duration">⏱️ 15-25 min</div>
+                        <div class="activity-difficulty difficulty-medium">Intermediário</div>
+                    </div>
+                    <button class="activity-btn ethics" onclick="startActivity('ethics')">
+                        Iniciar Laboratório de Ética
+                    </button>
+                </div>
+                
+                <!-- DER Quiz Interativo -->
+                <div class="activity-card der-quiz">
+                    <div class="activity-status status-available">Disponível</div>
+                    <div class="activity-icon">📊</div>
+                    <div class="activity-title">DER Quiz Interativo</div>
+                    <div class="activity-description">
+                        Pratique modelagem de Diagrama Entidade-Relacionamento através de questões 
+                        interativas. Teste seus conhecimentos em identificação de entidades, 
+                        relacionamentos e construção de DERs básicos.
+                    </div>
+                    <div class="activity-meta">
+                        <div class="activity-duration">⏱️ 15-20 min</div>
+                        <div class="activity-difficulty difficulty-easy">Básico</div>
+                    </div>
+                    <button class="activity-btn der-quiz" onclick="startActivity('der_quiz')">
+                        Iniciar DER Quiz
+                    </button>
+                </div>
+                
+                <!-- Laboratório de R&S -->
+                <div class="activity-card rs-lab">
+                    <div class="activity-status status-available">Disponível</div>
+                    <div class="activity-icon">R&S</div>
+                    <div class="activity-title">Laboratório de R&S</div>
+                    <div class="activity-description">
+                        Pratique Excel aplicado ao Recrutamento e Seleção. 
+                        Trabalhe com fórmulas SOMA, SE, PROCV e MÉDIA em cenários reais de RH.
+                    </div>
+                    <div class="activity-meta">
+                        <div class="activity-duration">⏱️ 30-40 min</div>
+                        <div class="activity-difficulty difficulty-medium">Intermediário</div>
+                    </div>
+                    <button class="activity-btn rs-lab" onclick="startActivity('rs_lab')">
+                        Iniciar Laboratório de R&S
+                    </button>
+                </div>
+                
+                <!-- Laboratório de Programação -->
+                <div class="activity-card programming">
+                    <div class="activity-status status-coming-soon">Em Breve</div>
+                    <div class="activity-icon">💻</div>
+                    <div class="activity-title">Laboratório de Algoritmos</div>
+                    <div class="activity-description">
+                        Pratique conceitos fundamentais de programação através de desafios 
+                        progressivos. Resolva problemas de lógica e implemente algoritmos 
+                        essenciais para o desenvolvimento.
+                    </div>
+                    <div class="activity-meta">
+                        <div class="activity-duration">⏱️ 30-45 min</div>
+                        <div class="activity-difficulty difficulty-hard">Avançado</div>
+                    </div>
+                    <button class="activity-btn programming" disabled>
+                        Em Desenvolvimento
+                    </button>
+                </div>
+                
+                <!-- Laboratório de Redes -->
+                <div class="activity-card networks">
+                    <div class="activity-status status-coming-soon">Em Breve</div>
+                    <div class="activity-icon">🌐</div>
+                    <div class="activity-title">Simulador de Redes</div>
+                    <div class="activity-description">
+                        Configure e diagnostique redes virtuais em um ambiente simulado. 
+                        Aprenda sobre protocolos, segurança e troubleshooting através 
+                        de cenários práticos.
+                    </div>
+                    <div class="activity-meta">
+                        <div class="activity-duration">⏱️ 20-35 min</div>
+                        <div class="activity-difficulty difficulty-medium">Intermediário</div>
+                    </div>
+                    <button class="activity-btn networks" disabled>
+                        Em Desenvolvimento
+                    </button>
+                </div>
+                
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p><strong>Atividades Acadêmicas Interativas</strong></p>
+            <p>Professor Leandro Rodrigues • 2025</p>
+        </div>
+    </div>
+    
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>Carregando...</p>
+        </div>
+    </div>
+    
+    <script>
+        // Verificar autenticação ao carregar a página
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthentication();
+        });
+        
+        // Verificar se usuário está autenticado
+        async function checkAuthentication() {
+            showLoading(true);
+            
+            try {
+                const response = await fetch('auth/auth.php?check');
+                const result = await response.json();
+                
+                if (result.authenticated) {
+                    // Usuário autenticado
+                    showUserInterface(result.user);
+                } else {
+                    // Usuário não autenticado
+                    showLoginPrompt();
+                }
+            } catch (error) {
+                console.error('Erro ao verificar autenticação:', error);
+                showLoginPrompt();
+            } finally {
+                showLoading(false);
+            }
+        }
+        
+        // Mostrar interface para usuário autenticado
+        function showUserInterface(user) {
+            // Mostrar informações do usuário
+            document.getElementById('userName').textContent = user.name;
+            document.getElementById('userInfo').classList.add('show');
+            
+            // Ocultar prompt de login
+            document.getElementById('loginPrompt').style.display = 'none';
+            
+            // Mostrar atividades
+            document.getElementById('activitiesGrid').style.display = 'grid';
+            
+            // Se for admin, adicionar indicação
+            if (user.is_admin) {
+                document.getElementById('userName').textContent += ' (Admin)';
+                addAdminButton();
+            }
+        }
+        
+        // Mostrar prompt de login
+        function showLoginPrompt() {
+            document.getElementById('loginPrompt').style.display = 'block';
+            document.getElementById('activitiesGrid').style.display = 'none';
+            document.getElementById('userInfo').classList.remove('show');
+        }
+        
+        // Adicionar botão de acesso administrativo
+        function addAdminButton() {
+            const adminBtn = document.createElement('a');
+            adminBtn.href = 'admin/index.php';
+            adminBtn.className = 'btn-login btn-admin';
+            adminBtn.textContent = 'Painel Administrativo';
+            adminBtn.style.marginTop = '20px';
+            adminBtn.style.display = 'inline-block';
+            
+            document.querySelector('.welcome-section').appendChild(adminBtn);
+        }
+        
+        // Iniciar uma atividade específica
+        function startActivity(activityType) {
+            showLoading(true);
+            
+            switch(activityType) {
+                case 'ethics':
+                    window.location.href = 'etica/index.html';
+                    break;
+                case 'der_quiz':
+                    window.location.href = 'der_quiz/index.html';
+                    break;
+                case 'rs_lab':
+                    window.location.href = 'rs_lab/index.html';
+                    break;
+                case 'programming':
+                    alert('Laboratório de Algoritmos em desenvolvimento!');
+                    showLoading(false);
+                    break;
+                case 'networks':
+                    alert('Simulador de Redes em desenvolvimento!');
+                    showLoading(false);
+                    break;
+                default:
+                    alert('Atividade não encontrada!');
+                    showLoading(false);
+            }
+        }
+        
+        // Fazer logout
+        async function logout() {
+            if (confirm('Tem certeza que deseja sair do sistema?')) {
+                showLoading(true);
+                
+                try {
+                    const response = await fetch('auth/auth.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ action: 'logout' })
+                    });
+                    
+                    if (response.ok) {
+                        // Recarregar página para mostrar tela de login
+                        window.location.reload();
+                    }
+                } catch (error) {
+                    console.error('Erro no logout:', error);
+                    // Mesmo com erro, recarregar
+                    window.location.reload();
+                } finally {
+                    showLoading(false);
+                }
+            }
+        }
+        
+        // Mostrar/ocultar loading
+        function showLoading(show) {
+            const overlay = document.getElementById('loadingOverlay');
+            overlay.style.display = show ? 'flex' : 'none';
+        }
+        
+        // Verificar periodicamente se a sessão ainda é válida
+        setInterval(checkAuthentication, 300000); // A cada 5 minutos
+    </script>
+</body>
+</html>

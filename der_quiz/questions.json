@@ -1,0 +1,564 @@
+{
+  "questions": [
+    {
+      "id": "q001",
+      "type": "conceptual",
+      "difficulty": "easy",
+      "title": "Identificando Entidades Básicas",
+      "description": "Uma loja vende produtos para clientes. Cada produto tem um código e preço. Cada cliente tem nome e telefone.\n\nQuais são as ENTIDADES neste cenário?",
+      "timeLimit": 30,
+      "options": [
+        {
+          "id": "a",
+          "text": "LOJA e PRODUTO"
+        },
+        {
+          "id": "b",
+          "text": "PRODUTO e CLIENTE"
+        },
+        {
+          "id": "c",
+          "text": "CÓDIGO e PREÇO"
+        },
+        {
+          "id": "d",
+          "text": "NOME e TELEFONE"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Entidades são 'coisas' do mundo real. PRODUTO e CLIENTE são as entidades. Código, preço, nome e telefone são atributos."
+    },
+    {
+      "id": "q002",
+      "type": "interactive_choice",
+      "difficulty": "easy",
+      "title": "Monte o DER - Biblioteca",
+      "description": "Sistema: Uma BIBLIOTECA empresta LIVROS para USUÁRIOS.\n\nSelecione a representação correta do DER:",
+      "timeLimit": 35,
+      "options": [
+        {
+          "id": "a",
+          "text": "BIBLIOTECA ---- EMPRESTA ---- LIVRO ---- TEM ---- USUARIO"
+        },
+        {
+          "id": "b",
+          "text": "USUARIO ---- EMPRESTA ---- LIVRO"
+        },
+        {
+          "id": "c",
+          "text": "LIVRO ---- PERTENCE ---- BIBLIOTECA ---- ATENDE ---- USUARIO"
+        },
+        {
+          "id": "d",
+          "text": "USUARIO ---- EMPRESTIMO ---- LIVRO (com entidade associativa)"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "A representação mais simples é USUARIO ---- EMPRESTA ---- LIVRO. BIBLIOTECA seria o sistema, não uma entidade neste contexto."
+    },
+    {
+      "id": "q003",
+      "type": "conceptual",
+      "difficulty": "easy",
+      "title": "Formas Geométricas do DER",
+      "description": "No Diagrama Entidade-Relacionamento, qual forma geométrica representa uma ENTIDADE?",
+      "timeLimit": 25,
+      "options": [
+        {
+          "id": "a",
+          "text": "Círculo"
+        },
+        {
+          "id": "b",
+          "text": "Retângulo"
+        },
+        {
+          "id": "c",
+          "text": "Losango"
+        },
+        {
+          "id": "d",
+          "text": "Triângulo"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Entidades são representadas por RETÂNGULOS no DER."
+    },
+    {
+      "id": "q004",
+      "type": "interactive_choice",
+      "difficulty": "easy",
+      "title": "DER Correto - Escola",
+      "description": "Cenário: PROFESSORES ministram DISCIPLINAS para ALUNOS.\n\nQual DER representa melhor esta situação?",
+      "timeLimit": 40,
+      "options": [
+        {
+          "id": "a",
+          "text": "PROFESSOR ---- MINISTRA ---- DISCIPLINA ---- CURSA ---- ALUNO"
+        },
+        {
+          "id": "b",
+          "text": "PROFESSOR ---- ENSINA ---- ALUNO (apenas)"
+        },
+        {
+          "id": "c",
+          "text": "ALUNO ---- ESTUDA ---- DISCIPLINA (apenas)"
+        },
+        {
+          "id": "d",
+          "text": "Três entidades sem relacionamentos"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Precisamos conectar as três entidades: PROFESSOR ministra DISCIPLINA, e ALUNO cursa DISCIPLINA."
+    },
+    {
+      "id": "q005",
+      "type": "conceptual",
+      "difficulty": "easy",
+      "title": "Identificando Atributos",
+      "description": "Em uma escola, temos alunos que possuem: matrícula, nome, idade e série.\n\nQuais são os ATRIBUTOS da entidade ALUNO?",
+      "timeLimit": 30,
+      "options": [
+        {
+          "id": "a",
+          "text": "ESCOLA e ALUNO"
+        },
+        {
+          "id": "b",
+          "text": "Matrícula, nome, idade, série"
+        },
+        {
+          "id": "c",
+          "text": "Apenas matrícula"
+        },
+        {
+          "id": "d",
+          "text": "ALUNO e SÉRIE"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Atributos são as características da entidade. Para ALUNO são: matrícula, nome, idade e série."
+    },
+    {
+      "id": "q006",
+      "type": "interactive_choice",
+      "difficulty": "medium",
+      "title": "DER com Cardinalidade - Empresa",
+      "description": "Regra: Cada FUNCIONÁRIO trabalha em UM departamento. Cada DEPARTAMENTO tem VÁRIOS funcionários.\n\nRepresentação correta:",
+      "timeLimit": 40,
+      "options": [
+        {
+          "id": "a",
+          "text": "FUNCIONARIO (1) ---- TRABALHA ---- (N) DEPARTAMENTO"
+        },
+        {
+          "id": "b",
+          "text": "FUNCIONARIO (N) ---- TRABALHA ---- (1) DEPARTAMENTO"
+        },
+        {
+          "id": "c",
+          "text": "FUNCIONARIO (N) ---- TRABALHA ---- (N) DEPARTAMENTO"
+        },
+        {
+          "id": "d",
+          "text": "FUNCIONARIO (1) ---- TRABALHA ---- (1) DEPARTAMENTO"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "Muitos funcionários (N) trabalham em um departamento (1). Vista do departamento: um departamento tem muitos funcionários."
+    },
+    {
+      "id": "q007",
+      "type": "conceptual",
+      "difficulty": "easy",
+      "title": "Chave Primária",
+      "description": "Na entidade PRODUTO com atributos: código, nome, preço, categoria.\n\nQual atributo seria melhor como chave primária?",
+      "timeLimit": 30,
+      "options": [
+        {
+          "id": "a",
+          "text": "nome"
+        },
+        {
+          "id": "b",
+          "text": "preço"
+        },
+        {
+          "id": "c",
+          "text": "código"
+        },
+        {
+          "id": "d",
+          "text": "categoria"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Código é único para cada produto. Nome, preço e categoria podem se repetir."
+    },
+    {
+      "id": "q008",
+      "type": "interactive_choice",
+      "difficulty": "medium",
+      "title": "DER Completo - Loja Online",
+      "description": "Sistema: CLIENTES fazem PEDIDOS que contêm PRODUTOS.\n\nQual representação está mais completa?",
+      "timeLimit": 45,
+      "options": [
+        {
+          "id": "a",
+          "text": "CLIENTE ---- FAZ ---- PEDIDO ---- CONTEM ---- PRODUTO"
+        },
+        {
+          "id": "b",
+          "text": "CLIENTE ---- COMPRA ---- PRODUTO (direto)"
+        },
+        {
+          "id": "c",
+          "text": "PEDIDO ---- PERTENCE ---- CLIENTE e PEDIDO ---- INCLUI ---- PRODUTO"
+        },
+        {
+          "id": "d",
+          "text": "Apenas CLIENTE e PRODUTO conectados"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "A sequência CLIENTE ---- FAZ ---- PEDIDO ---- CONTEM ---- PRODUTO representa melhor o fluxo do negócio."
+    },
+    {
+      "id": "q009",
+      "type": "conceptual",
+      "difficulty": "easy",
+      "title": "Relacionamentos vs Entidades",
+      "description": "Em 'Médicos atendem pacientes':\n\nO que é ATENDER?",
+      "timeLimit": 30,
+      "options": [
+        {
+          "id": "a",
+          "text": "Uma entidade"
+        },
+        {
+          "id": "b",
+          "text": "Um relacionamento"
+        },
+        {
+          "id": "c",
+          "text": "Um atributo"
+        },
+        {
+          "id": "d",
+          "text": "Uma chave"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "ATENDER é a ação/ligação entre MÉDICO e PACIENTE, portanto é um relacionamento."
+    },
+    {
+      "id": "q010",
+      "type": "interactive_choice",
+      "difficulty": "medium",
+      "title": "Cardinalidade N:M",
+      "description": "Situação: ESTUDANTES podem cursar VÁRIAS disciplinas. DISCIPLINAS podem ter VÁRIOS estudantes.\n\nRepresentação correta:",
+      "timeLimit": 40,
+      "options": [
+        {
+          "id": "a",
+          "text": "ESTUDANTE (1) ---- CURSA ---- (1) DISCIPLINA"
+        },
+        {
+          "id": "b",
+          "text": "ESTUDANTE (1) ---- CURSA ---- (N) DISCIPLINA"
+        },
+        {
+          "id": "c",
+          "text": "ESTUDANTE (N) ---- CURSA ---- (M) DISCIPLINA"
+        },
+        {
+          "id": "d",
+          "text": "ESTUDANTE (N) ---- CURSA ---- (1) DISCIPLINA"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Muitos estudantes podem cursar muitas disciplinas = relacionamento N:M (muitos para muitos)."
+    },
+    {
+      "id": "q011",
+      "type": "conceptual",
+      "difficulty": "easy",
+      "title": "Símbolos do DER",
+      "description": "Qual forma geométrica representa RELACIONAMENTOS no DER?",
+      "timeLimit": 25,
+      "options": [
+        {
+          "id": "a",
+          "text": "Retângulo"
+        },
+        {
+          "id": "b",
+          "text": "Círculo"
+        },
+        {
+          "id": "c",
+          "text": "Losango"
+        },
+        {
+          "id": "d",
+          "text": "Elipse"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Relacionamentos são representados por LOSANGOS no DER."
+    },
+    {
+      "id": "q012",
+      "type": "interactive_choice",
+      "difficulty": "medium",
+      "title": "DER Hospital - Múltiplos Relacionamentos",
+      "description": "Hospital: MÉDICOS atendem PACIENTES. PACIENTES ocupam LEITOS. MÉDICOS trabalham em ESPECIALIDADES.\n\nQuantos relacionamentos existem?",
+      "timeLimit": 45,
+      "options": [
+        {
+          "id": "a",
+          "text": "1 relacionamento apenas"
+        },
+        {
+          "id": "b",
+          "text": "2 relacionamentos"
+        },
+        {
+          "id": "c",
+          "text": "3 relacionamentos"
+        },
+        {
+          "id": "d",
+          "text": "4 relacionamentos"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "3 relacionamentos: MÉDICO 'atende' PACIENTE, PACIENTE 'ocupa' LEITO, MÉDICO 'trabalha' ESPECIALIDADE."
+    },
+    {
+      "id": "q013",
+      "type": "conceptual",
+      "difficulty": "easy",
+      "title": "Atributos vs Entidades",
+      "description": "No sistema de loja: 'CLIENTE' e 'nome do cliente'.\n\nQual a diferença?",
+      "timeLimit": 30,
+      "options": [
+        {
+          "id": "a",
+          "text": "Não há diferença"
+        },
+        {
+          "id": "b",
+          "text": "CLIENTE é entidade, nome é atributo"
+        },
+        {
+          "id": "c",
+          "text": "CLIENTE é atributo, nome é entidade"
+        },
+        {
+          "id": "d",
+          "text": "Ambos são relacionamentos"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "CLIENTE é a 'coisa' principal (entidade). Nome é uma característica do cliente (atributo)."
+    },
+    {
+      "id": "q014",
+      "type": "interactive_choice",
+      "difficulty": "hard",
+      "title": "DER Complexo - Sistema Acadêmico",
+      "description": "Sistema completo: PROFESSORES ministram DISCIPLINAS em TURMAS. ALUNOS se matriculam em TURMAS.\n\nMelhor representação:",
+      "timeLimit": 50,
+      "options": [
+        {
+          "id": "a",
+          "text": "PROFESSOR ---- DISCIPLINA ---- TURMA ---- ALUNO (linear)"
+        },
+        {
+          "id": "b",
+          "text": "PROFESSOR ---- MINISTRA ---- DISCIPLINA e ALUNO ---- MATRICULA ---- TURMA"
+        },
+        {
+          "id": "c",
+          "text": "TURMA como entidade central conectada a todas"
+        },
+        {
+          "id": "d",
+          "text": "Cada entidade separada sem relacionamentos"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "TURMA é a entidade central que conecta PROFESSOR+DISCIPLINA com ALUNOS matriculados."
+    },
+    {
+      "id": "q015",
+      "type": "conceptual",
+      "difficulty": "easy",
+      "title": "Símbolos - Atributos",
+      "description": "No DER, qual forma representa ATRIBUTOS?",
+      "timeLimit": 25,
+      "options": [
+        {
+          "id": "a",
+          "text": "Retângulo"
+        },
+        {
+          "id": "b",
+          "text": "Losango"
+        },
+        {
+          "id": "c",
+          "text": "Elipse (oval)"
+        },
+        {
+          "id": "d",
+          "text": "Hexágono"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Atributos são representados por ELIPSES (ovais) no DER."
+    },
+    {
+      "id": "q016",
+      "type": "interactive_choice",
+      "difficulty": "medium",
+      "title": "Corrigindo Cardinalidade",
+      "description": "Afirmação: 'Cada funcionário tem UMA carteira de trabalho. Cada carteira pertence a UM funcionário.'\n\nCardinalidade correta:",
+      "timeLimit": 35,
+      "options": [
+        {
+          "id": "a",
+          "text": "FUNCIONARIO (1) ---- TEM ---- (1) CARTEIRA"
+        },
+        {
+          "id": "b",
+          "text": "FUNCIONARIO (N) ---- TEM ---- (1) CARTEIRA"
+        },
+        {
+          "id": "c",
+          "text": "FUNCIONARIO (1) ---- TEM ---- (N) CARTEIRA"
+        },
+        {
+          "id": "d",
+          "text": "FUNCIONARIO (N) ---- TEM ---- (N) CARTEIRA"
+        }
+      ],
+      "correctAnswer": "a",
+      "explanation": "Relacionamento 1:1 - cada funcionário tem uma carteira, cada carteira pertence a um funcionário."
+    },
+    {
+      "id": "q017",
+      "type": "conceptual",
+      "difficulty": "easy",
+      "title": "Contando Entidades",
+      "description": "Cenário: Uma biblioteca empresta livros para leitores.\n\nQuantas entidades principais existem?",
+      "timeLimit": 30,
+      "options": [
+        {
+          "id": "a",
+          "text": "1 entidade"
+        },
+        {
+          "id": "b",
+          "text": "2 entidades"
+        },
+        {
+          "id": "c",
+          "text": "3 entidades"
+        },
+        {
+          "id": "d",
+          "text": "4 entidades"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "2 entidades principais: LIVRO e LEITOR. (Biblioteca é o sistema, empréstimo é relacionamento)"
+    },
+    {
+      "id": "q018",
+      "type": "interactive_choice",
+      "difficulty": "hard",
+      "title": "DER com Entidade Associativa",
+      "description": "Problema: ESTUDANTE cursa DISCIPLINA, mas precisamos registrar NOTA e FREQUÊNCIA.\n\nMelhor solução:",
+      "timeLimit": 50,
+      "options": [
+        {
+          "id": "a",
+          "text": "ESTUDANTE ---- CURSA ---- DISCIPLINA (relacionamento simples)"
+        },
+        {
+          "id": "b",
+          "text": "Adicionar NOTA e FREQUÊNCIA como atributos de ESTUDANTE"
+        },
+        {
+          "id": "c",
+          "text": "Criar entidade MATRICULA com NOTA e FREQUÊNCIA"
+        },
+        {
+          "id": "d",
+          "text": "Criar tabelas separadas para cada atributo"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "Entidade associativa MATRICULA resolve o relacionamento N:M e armazena os atributos específicos."
+    },
+    {
+      "id": "q019",
+      "type": "conceptual",
+      "difficulty": "easy",
+      "title": "Identificador Único",
+      "description": "Entidade FUNCIONÁRIO: CPF, nome, salário, telefone.\n\nMelhor chave primária:",
+      "timeLimit": 30,
+      "options": [
+        {
+          "id": "a",
+          "text": "nome"
+        },
+        {
+          "id": "b",
+          "text": "CPF"
+        },
+        {
+          "id": "c",
+          "text": "salário"
+        },
+        {
+          "id": "d",
+          "text": "telefone"
+        }
+      ],
+      "correctAnswer": "b",
+      "explanation": "CPF é único para cada pessoa, ideal para chave primária. Nome e telefone podem repetir."
+    },
+    {
+      "id": "q020",
+      "type": "interactive_choice",
+      "difficulty": "medium",
+      "title": "DER Final - Sistema Completo",
+      "description": "Sistema: VENDEDORES vendem PRODUTOS para CLIENTES. Cada venda tem DATA e VALOR.\n\nEstrutura completa:",
+      "timeLimit": 45,
+      "options": [
+        {
+          "id": "a",
+          "text": "VENDEDOR ---- PRODUTO ---- CLIENTE (triangular)"
+        },
+        {
+          "id": "b",
+          "text": "VENDEDOR ---- VENDE ---- PRODUTO e CLIENTE ---- COMPRA ---- PRODUTO"
+        },
+        {
+          "id": "c",
+          "text": "VENDEDOR, PRODUTO, CLIENTE ---- VENDA (entidade associativa)"
+        },
+        {
+          "id": "d",
+          "text": "Três relacionamentos binários separados"
+        }
+      ],
+      "correctAnswer": "c",
+      "explanation": "VENDA como entidade associativa conecta as três entidades e armazena DATA e VALOR da transação."
+    }
+  ]
+}

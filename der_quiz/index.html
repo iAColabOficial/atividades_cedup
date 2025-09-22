@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DER Quiz - Modelagem de Entidade-Relacionamento</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h2>Carregando DER Quiz</h2>
+            <p>Preparando questões sobre Modelagem ER...</p>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <h1 class="header-title">
+                    <span class="icon">📊</span>
+                    DER Quiz Interativo
+                </h1>
+                <div class="header-info">
+                    <span id="userInfo" class="user-info">Carregando...</span>
+                    <a href="../index.html" class="btn-back">← Voltar ao Hub</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-container">
+        <div class="container">
+            
+            <!-- Welcome Screen -->
+            <div id="welcomeScreen" class="screen active">
+                <div class="welcome-card">
+                    <div class="welcome-header">
+                        <h2>Laboratório de Modelagem ER</h2>
+                        <p class="welcome-subtitle">Teste seus conhecimentos em Diagrama Entidade-Relacionamento</p>
+                    </div>
+                    
+                    <div class="quiz-info">
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-icon">📝</span>
+                                <h3>20 Questões</h3>
+                                <p>Selecionadas aleatoriamente</p>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-icon">⏱️</span>
+                                <h3>30-45 seg</h3>
+                                <p>Por questão</p>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-icon">🎯</span>
+                                <h3>2 Partes</h3>
+                                <p>Conceitual + Visual</p>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-icon">📊</span>
+                                <h3>Pontuação</h3>
+                                <p>0-100 pontos</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="instructions">
+                        <h3>Instruções:</h3>
+                        <ul>
+                            <li>Leia cada questão com atenção</li>
+                            <li>Você tem tempo limitado por questão</li>
+                            <li>Não é possível voltar às questões anteriores</li>
+                            <li>Mantenha o foco na tela durante todo o quiz</li>
+                            <li>Sua pontuação será calculada automaticamente</li>
+                        </ul>
+                    </div>
+
+                    <div class="welcome-actions">
+                        <button id="startQuiz" class="btn-primary">
+                            <span>Iniciar Quiz</span>
+                            <span class="btn-arrow">→</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Screen -->
+            <div id="quizScreen" class="screen">
+                <!-- Progress Bar -->
+                <div class="progress-container">
+                    <div class="progress-info">
+                        <span>Questão <span id="currentQuestion">1</span> de <span id="totalQuestions">20</span></span>
+                        <span class="timer" id="timer">30s</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+
+                <!-- Question Card -->
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-type" id="questionType">Conceitual</span>
+                        <span class="question-difficulty" id="questionDifficulty">Médio</span>
+                    </div>
+                    
+                    <div class="question-content">
+                        <h3 class="question-title" id="questionTitle">Carregando questão...</h3>
+                        
+                        <!-- Text Question -->
+                        <div id="textQuestion" class="question-text">
+                            <p id="questionDescription"></p>
+                        </div>
+                        
+                        <!-- Image Question -->
+                        <div id="imageQuestion" class="question-image" style="display: none;">
+                            <img id="questionImage" src="" alt="Diagrama ER">
+                            <p id="imageDescription"></p>
+                        </div>
+                    </div>
+
+                    <!-- Options -->
+                    <div class="options-container" id="optionsContainer">
+                        <!-- Options will be inserted here dynamically -->
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="question-actions">
+                        <button id="submitAnswer" class="btn-submit" disabled>
+                            Confirmar Resposta
+                        </button>
+                        <div class="action-info">
+                            <span id="actionHint">Selecione uma opção</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Screen -->
+            <div id="resultsScreen" class="screen">
+                <div class="results-card">
+                    <div class="results-header">
+                        <h2>Quiz Finalizado!</h2>
+                        <div class="score-display">
+                            <span class="score-number" id="finalScore">85</span>
+                            <span class="score-label">pontos</span>
+                        </div>
+                    </div>
+
+                    <div class="results-breakdown">
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Questões Corretas:</span>
+                            <span class="breakdown-value" id="correctAnswers">17/20</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Tempo Total:</span>
+                            <span class="breakdown-value" id="totalTime">8m 45s</span>
+                        </div>
+                        <div class="breakdown-item">
+                            <span class="breakdown-label">Tempo Médio:</span>
+                            <span class="breakdown-value" id="averageTime">26s</span>
+                        </div>
+                    </div>
+
+                    <div class="performance-analysis" id="performanceAnalysis">
+                        <!-- Performance details will be inserted here -->
+                    </div>
+
+                    <div class="results-actions">
+                        <button id="tryAgain" class="btn-secondary">
+                            Tentar Novamente
+                        </button>
+                        <button id="viewDetails" class="btn-primary">
+                            Ver Detalhes
+                        </button>
+                        <a href="../admin/index.php" class="btn-link">
+                            Ir para Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Warning Modal -->
+    <div id="warningModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>⚠️ Atenção</h3>
+                <button class="modal-close" id="closeWarning">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="warningMessage">Ação não permitida durante o quiz.</p>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-primary" id="warningOk">Entendi</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>

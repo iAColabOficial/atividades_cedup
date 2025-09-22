@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratório de R&S - Excel para Recursos Humanos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease;
+        }
+        
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .loading-content {
+            text-align: center;
+            color: white;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 20px;
+            border-radius: 15px 15px 0 0;
+            margin-bottom: 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .header-title {
+            font-size: 2.2em;
+            font-weight: 300;
+            margin-bottom: 5px;
+        }
+        
+        .header-subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .header-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-info {
+            background: rgba(255,255,255,0.1);
+            padding: 10px 20px;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .btn-back {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-back:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-1px);
+        }
+        
+        /* Screens */
+        .screen {
+            display: none;
+            background: white;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            min-height: 600px;
+        }
+        
+        .screen.active {
+            display: block;
+        }
+        
+        /* Welcome Screen */
+        .welcome-card {
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .lab-header {
+            margin-bottom: 40px;
+        }
+        
+        .lab-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            display: block;
+            color: #e67e22;
+        }
+        
+        .lab-header h1 {
+            font-size: 2.5em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+        
+        .lab-header p {
+            font-size: 1.2em;
+            color: #7f8c8d;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .scenario-intro {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+        }
+        
+        .scenario-intro h3 {
+            color: #2c3e50;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+        
+        .company-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 5px solid #e67e22;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .company-card h4 {
+            color: #e67e22;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+        
+        .company-card p {
+            color: #555;
+            font-size: 1.1em;
+        }
+        
+        .lab-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .info-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid #ecf0f1;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .info-card:hover {
+            border-color: #e67e22;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .info-icon {
+            font-size: 2.5em;
+            color: #e67e22;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .info-card h4 {
+            color: #2c3e50;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+        
+        .info-card p {
+            color: #7f8c8d;
+            font-size: 0.95em;
+        }
+        
+        .welcome-actions {
+            margin-top: 40px;
+        }
+        
+        .btn-start-lab {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .btn-start-lab:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(230,126,34,0.3);
+        }
+        
+        .btn-arrow {
+            font-size: 1.1em;
+            transition: transform 0.3s ease;
+        }
+        
+        .btn-start-lab:hover .btn-arrow {
+            transform: translateX(5px);
+        }
+        
+        /* Lab Screen */
+        .lab-screen {
+            padding: 0;
+            min-height: 700px;
+        }
+        
+        .progress-container {
+            background: #34495e;
+            color: white;
+            padding: 20px;
+        }
+        
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        .timer {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        
+        .timer.warning {
+            background: #f39c12;
+            animation: pulse 1s infinite;
+        }
+        
+        .timer.danger {
+            background: #e74c3c;
+            animation: pulse 0.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #e67e22, #f39c12);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        /* Excel Container */
+        .excel-container {
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .excel-toolbar {
+            background: #e9ecef;
+            padding: 10px 20px;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .excel-title {
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .formula-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+        
+        .formula-bar span {
+            background: #6c757d;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+        
+        .formula-bar input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+        }
+        
+        .excel-sheet {
+            padding: 20px;
+            max-height: 400px;
+            overflow: auto;
+        }
+        
+        .excel-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .excel-table th {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 8px 12px;
+            font-weight: 600;
+            color: #495057;
+            text-align: center;
+            min-width: 80px;
+        }
+        
+        .excel-table td {
+            border: 1px solid #dee2e6;
+            padding: 8px 12px;
+            text-align: right;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .excel-table td:first-child {
+            text-align: left;
+            font-weight: 500;
+        }
+        
+        .excel-table td:hover {
+            background: #e3f2fd;
+        }
+        
+        .excel-table td.selected {
+            background: #2196f3;
+            color: white;
+        }
+        
+        .excel-table td.formula-result {
+            background: #fff3e0;
+            font-weight: 600;
+            color: #e65100;
+        }
+        
+        /* Question Panel */
+        .question-panel {
+            padding: 30px;
+        }
+        
+        .question-header {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .question-type, .question-difficulty {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        
+        .question-type {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .question-difficulty {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+        
+        .question-content h3 {
+            color: #2c3e50;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        
+        .question-content p {
+            color: #555;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+        
+        .question-instruction {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+        
+        .question-instruction strong {
+            color: #856404;
+        }
+        
+        .answer-section {
+            margin-top: 30px;
+        }
+        
+        .answer-section label {
+            display: block;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .answer-section input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-family: 'Courier New', monospace;
+            margin-bottom: 20px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .answer-section input:focus {
+            outline: none;
+            border-color: #e67e22;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .btn-submit {
+            background: linear-gradient(135deg, #27ae60, #229954);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-submit:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(39,174,96,0.3);
+        }
+        
+        .btn-submit:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .btn-hint {
+            background: #f39c12;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-hint:hover {
+            background: #e67e22;
+            transform: translateY(-1px);
+        }
+        
+        .action-hint {
+            color: #7f8c8d;
+            font-style: italic;
+        }
+        
+        /* Results Screen */
+        .results-card {
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .results-header h2 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        
+        .score-display {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            margin: 30px 0;
+            display: inline-block;
+            min-width: 200px;
+        }
+        
+        .score-number {
+            font-size: 3.5em;
+            font-weight: bold;
+            display: block;
+        }
+        
+        .score-label {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .results-breakdown {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+        
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .breakdown-item:last-child {
+            border-bottom: none;
+        }
+        
+        .breakdown-label {
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .breakdown-value {
+            font-weight: bold;
+            color: #e67e22;
+        }
+        
+        .performance-analysis {
+            background: white;
+            border: 2px solid #e9ecef;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+            text-align: left;
+        }
+        
+        .results-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-1px);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(52,152,219,0.3);
+        }
+        
+        .btn-link {
+            color: #e67e22;
+            text-decoration: none;
+            padding: 12px 25px;
+            border: 2px solid #e67e22;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-link:hover {
+            background: #e67e22;
+            color: white;
+        }
+        
+        /* Warning Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 0;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .modal-header {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 20px 25px;
+            border-radius: 15px 15px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.3em;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #721c24;
+        }
+        
+        .modal-body {
+            padding: 25px;
+        }
+        
+        .modal-actions {
+            padding: 0 25px 25px;
+            text-align: right;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .header-title {
+                font-size: 1.8em;
+            }
+            
+            .lab-info-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            
+            .excel-toolbar {
+                flex-direction: column;
+                gap: 10px;
+                align-items: stretch;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .results-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .lab-info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .welcome-card, .question-panel, .results-card {
+                padding: 25px;
+            }
+            
+            .excel-sheet {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h2>Carregando Laboratório de R&S</h2>
+            <p>Preparando planilhas e cenários de Excel...</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div>
+                    <h1 class="header-title">Laboratório de R&S</h1>
+                    <p class="header-subtitle">Excel aplicado ao Recrutamento e Seleção</p>
+                </div>
+                <div class="header-info">
+                    <span id="userInfo" class="user-info">Carregando...</span>
+                    <a href="../index.html" class="btn-back">Voltar ao Hub</a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Welcome Screen -->
+        <div id="welcomeScreen" class="screen active">
+            <div class="welcome-card">
+                <div class="lab-header">
+                    <span class="lab-icon">R&S</span>
+                    <h1>Laboratório de Recrutamento e Seleção</h1>
+                    <p>Domine as fórmulas Excel mais usadas no RH: SOMA, SE, PROCV e MÉDIA através de cenários reais de recrutamento</p>
+                </div>
+                
+                <div class="scenario-intro">
+                    <h3>Seu Desafio Profissional:</h3>
+                    <div class="company-card">
+                        <h4>TechCorp Soluções Ltda</h4>
+                        <p>Você é analista de RH responsável por gerenciar 5 processos seletivos simultâneos. Precisa calcular custos, analisar candidatos e gerar relatórios usando Excel.</p>
+                    </div>
+                </div>
+
+                <div class="lab-info-grid">
+                    <div class="info-card">
+                        <span class="info-icon">Q</span>
+                        <h4>10 Questões</h4>
+                        <p>Cenários práticos do dia a dia</p>
+                    </div>
+                    <div class="info-card">
+                        <span class="info-icon">T</span>
+                        <h4>30-40 min</h4>
+                        <p>Tempo recomendado</p>
+                    </div>
+                    <div class="info-card">
+                        <span class="info-icon">F</span>
+                        <h4>4 Fórmulas</h4>
+                        <p>SOMA, SE, PROCV, MÉDIA</p>
+                    </div>
+                    <div class="info-card">
+                        <span class="info-icon">S</span>
+                        <h4>175 Pontos</h4>
+                        <p>Pontuação máxima</p>
+                    </div>
+                </div>
+
+                <div class="welcome-actions">
+                    <button id="startLab" class="btn-start-lab">
+                        <span>Iniciar Laboratório</span>
+                        <span class="btn-arrow">→</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lab Screen -->
+        <div id="labScreen" class="screen lab-screen">
+            <!-- Progress Bar -->
+            <div class="progress-container">
+                <div class="progress-info">
+                    <span>Questão <span id="currentQuestion">1</span> de <span id="totalQuestions">10</span></span>
+                    <span class="timer" id="timer">180s</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+
+            <!-- Excel Container -->
+            <div class="excel-container">
+                <div class="excel-toolbar">
+                    <span class="excel-title" id="sheetTitle">Planilha: Custos de Recrutamento</span>
+                    <div class="formula-bar">
+                        <span>fx</span>
+                        <input type="text" id="formulaInput" placeholder="Digite sua fórmula aqui..." readonly>
+                    </div>
+                </div>
+                
+                <div class="excel-sheet" id="excelSheet">
+                    <table class="excel-table" id="excelTable">
+                        <thead>
+                            <tr>
+                                <th>A</th>
+                                <th>B</th>
+                                <th>C</th>
+                                <th>D</th>
+                                <th>E</th>
+                                <th>F</th>
+                            </tr>
+                        </thead>
+                        <tbody id="excelTableBody">
+                            <!-- Dados serão inseridos dinamicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Question Panel -->
+            <div class="question-panel">
+                <div class="question-header">
+                    <span class="question-type" id="questionType">Cálculo</span>
+                    <span class="question-difficulty" id="questionDifficulty">Fácil</span>
+                </div>
+                
+                <div class="question-content">
+                    <h3 id="questionTitle">Calcule o custo total...</h3>
+                    <p id="questionDescription">Use a fórmula SOMA para...</p>
+                    
+                    <div class="question-instruction">
+                        <strong>Instrução:</strong> <span id="questionInstruction">Some todos os custos relacionados à vaga</span>
+                    </div>
+                </div>
+
+                <div class="answer-section">
+                    <label for="userAnswer">Sua fórmula Excel:</label>
+                    <input type="text" id="userAnswer" placeholder="">
+                    
+                    <div class="action-buttons">
+                        <button id="submitAnswer" class="btn-submit" disabled>Confirmar Resposta</button>
+                        <button id="showHint" class="btn-hint">Dica</button>
+                        <span id="actionHint" class="action-hint">Digite uma fórmula válida</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="resultsScreen" class="screen">
+            <div class="results-card">
+                <div class="results-header">
+                    <h2>Laboratório Finalizado!</h2>
+                    <div class="score-display">
+                        <span class="score-number" id="finalScore">85</span>
+                        <span class="score-label">pontos</span>
+                    </div>
+                </div>
+
+                <div class="results-breakdown">
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">Questões Corretas:</span>
+                        <span class="breakdown-value" id="correctAnswers">7/10</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">Tempo Total:</span>
+                        <span class="breakdown-value" id="totalTime">25m 30s</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">Fórmulas SOMA:</span>
+                        <span class="breakdown-value" id="somaScore">100%</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">Fórmulas SE:</span>
+                        <span class="breakdown-value" id="seScore">75%</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">Fórmulas PROCV:</span>
+                        <span class="breakdown-value" id="procvScore">50%</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span class="breakdown-label">Fórmulas MÉDIA:</span>
+                        <span class="breakdown-value" id="mediaScore">100%</span>
+                    </div>
+                </div>
+
+                <div class="performance-analysis" id="performanceAnalysis">
+                    <!-- Análise será inserida via JavaScript -->
+                </div>
+
+                <div class="results-actions">
+                    <button id="tryAgain" class="btn-secondary">Tentar Novamente</button>
+                    <button id="viewDetails" class="btn-primary">Ver Detalhes</button>
+                    <a href="../admin/index.php" class="btn-link">Dashboard Administrativo</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Warning Modal -->
+    <div id="warningModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Atenção</h3>
+                <button class="modal-close" id="closeWarning">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="warningMessage">Mensagem de aviso aqui.</p>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-primary" id="warningOk">Entendi</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

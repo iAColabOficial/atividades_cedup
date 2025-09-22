@@ -1,0 +1,383 @@
+{
+  "questions": [
+    {
+      "id": "Q001",
+      "type": "calculation",
+      "title": "Custo Total - Vaga de Desenvolvedor",
+      "description": "Calcule o custo total investido na contratação do Desenvolvedor Senior (V001)",
+      "formula_type": "SOMA",
+      "difficulty": "easy",
+      "scenario_id": "techcorp_2024",
+      "instruction": "Some todos os custos relacionados à vaga V001: LinkedIn Recruiter + Teste Técnico Externo",
+      "table_data": {
+        "headers": ["Item", "Valor", "Vaga ID"],
+        "rows": [
+          ["LinkedIn Recruiter", "R$ 500,00", "V001"],
+          ["Teste Tecnico Externo", "R$ 150,00", "V001"],
+          ["InfoJobs Anuncio", "R$ 200,00", "V002"],
+          ["Consultoria RH", "R$ 800,00", "V002"]
+        ],
+        "target_cell": "D2",
+        "formula_instruction": "Use SOMA para somar os valores da vaga V001 (células B1:B2)"
+      },
+      "expected_formula": "=SOMA(B1:B2)",
+      "expected_result": 650.00,
+      "validation_type": "both",
+      "hints": [
+        "Identifique apenas os custos da vaga V001",
+        "Use a função SOMA para somar os valores",
+        "A sintaxe é: =SOMA(célula_inicial:célula_final)"
+      ],
+      "time_limit": 180,
+      "points": 10
+    },
+
+    {
+      "id": "Q002", 
+      "type": "calculation",
+      "title": "Investimento Total em Recrutamento",
+      "description": "Calcule o investimento total da empresa em recrutamento no período",
+      "formula_type": "SOMA",
+      "difficulty": "easy",
+      "scenario_id": "techcorp_2024",
+      "instruction": "Some todos os custos de recrutamento de todas as vagas",
+      "table_data": {
+        "headers": ["Vaga", "LinkedIn", "InfoJobs", "Consultoria", "Headhunter", "Teste"],
+        "rows": [
+          ["V001", "500", "0", "0", "0", "150"],
+          ["V002", "0", "200", "800", "0", "0"],
+          ["V003", "0", "0", "0", "0", "0"],
+          ["V004", "500", "0", "0", "2000", "0"],
+          ["V005", "0", "0", "0", "0", "0"]
+        ],
+        "target_cell": "G6",
+        "formula_instruction": "Some todos os valores de todas as células de custos"
+      },
+      "expected_formula": "=SOMA(B1:F5)",
+      "expected_result": 4150.00,
+      "validation_type": "both",
+      "hints": [
+        "Selecione toda a área de custos na planilha",
+        "SOMA pode calcular ranges grandes de células",
+        "Use o formato =SOMA(célula_inicial:célula_final)"
+      ],
+      "time_limit": 200,
+      "points": 10
+    },
+
+    {
+      "id": "Q003",
+      "type": "formula",
+      "title": "Aprovação Automática por Pontuação",
+      "description": "Determine automaticamente quais candidatos foram aprovados",
+      "formula_type": "SE",
+      "difficulty": "medium",
+      "scenario_id": "techcorp_2024", 
+      "instruction": "Use SE para aprovar candidatos com pontuação total ≥ 240 pontos",
+      "table_data": {
+        "headers": ["Candidato", "Currículo", "Teste", "Entrevista", "Total", "Status"],
+        "rows": [
+          ["Maria Silva", "85", "78", "92", "255", ""],
+          ["João Pedro", "75", "65", "70", "210", ""],
+          ["Ana Carolina", "90", "88", "95", "273", ""],
+          ["Carlos Eduardo", "70", "75", "68", "213", ""],
+          ["Fernanda Costa", "95", "85", "90", "270", ""]
+        ],
+        "target_cell": "F1",
+        "formula_instruction": "Crie fórmula SE para aprovar se E1>=240"
+      },
+      "expected_formula": "=SE(E1>=240;\"APROVADO\";\"REPROVADO\")",
+      "expected_result": "APROVADO",
+      "validation_type": "formula_structure",
+      "hints": [
+        "A função SE tem 3 partes: condição, valor se verdadeiro, valor se falso",
+        "Use aspas para textos: \"APROVADO\" e \"REPROVADO\"",
+        "A condição é: pontuação total >= 240"
+      ],
+      "time_limit": 240,
+      "points": 15
+    },
+
+    {
+      "id": "Q004",
+      "type": "formula", 
+      "title": "Urgência por Prazo de Vaga",
+      "description": "Classifique a urgência das vagas baseado no prazo limite",
+      "formula_type": "SE",
+      "difficulty": "medium",
+      "scenario_id": "techcorp_2024",
+      "instruction": "Use SE para marcar como URGENTE vagas com prazo ≤ 30 dias da abertura",
+      "table_data": {
+        "headers": ["Vaga", "Abertura", "Prazo", "Dias Prazo", "Urgência"],
+        "rows": [
+          ["V001", "15/01/2024", "15/02/2024", "31", ""],
+          ["V002", "20/01/2024", "01/03/2024", "41", ""],
+          ["V003", "25/01/2024", "15/03/2024", "50", ""],
+          ["V004", "01/02/2024", "28/02/2024", "27", ""],
+          ["V005", "05/02/2024", "20/03/2024", "44", ""]
+        ],
+        "target_cell": "E1",
+        "formula_instruction": "Use SE para verificar se D1<=30"
+      },
+      "expected_formula": "=SE(D1<=30;\"URGENTE\";\"NORMAL\")",
+      "expected_result": "NORMAL",
+      "validation_type": "formula_structure", 
+      "hints": [
+        "Compare a coluna 'Dias Prazo' com 30",
+        "Se <= 30 dias: URGENTE, senão: NORMAL",
+        "Use referência à célula D1 na fórmula"
+      ],
+      "time_limit": 240,
+      "points": 15
+    },
+
+    {
+      "id": "Q005",
+      "type": "lookup",
+      "title": "Buscar Faixa Salarial por Nível",
+      "description": "Use PROCV para encontrar o salário máximo do nível Senior",
+      "formula_type": "PROCV",
+      "difficulty": "medium",
+      "scenario_id": "techcorp_2024",
+      "instruction": "Busque na tabela de faixas salariais o valor máximo para nível Senior",
+      "table_data": {
+        "reference_table": {
+          "name": "Tabela de Faixas Salariais",
+          "headers": ["Nível", "Sal. Mínimo", "Sal. Máximo", "Benefícios"],
+          "rows": [
+            ["Estagio", "800", "1500", "VT + VR"],
+            ["Junior", "2000", "3500", "VT + VR + Saúde"],
+            ["Pleno", "3500", "6000", "VT + VR + Saúde + PLR"],
+            ["Senior", "6000", "12000", "Todos + Bonus"]
+          ]
+        },
+        "lookup_cell": "G1",
+        "formula_instruction": "Use PROCV para buscar 'Senior' na coluna A e retornar coluna C"
+      },
+      "expected_formula": "=PROCV(\"Senior\";A1:D4;3;FALSO)",
+      "expected_result": 12000.00,
+      "validation_type": "both",
+      "hints": [
+        "PROCV tem 4 parâmetros: valor_procurado, tabela, coluna_resultado, correspondência_exata",
+        "Procure por 'Senior' na primeira coluna",
+        "Retorne o valor da 3ª coluna (Sal. Máximo)",
+        "Use FALSO para correspondência exata"
+      ],
+      "time_limit": 300,
+      "points": 20
+    },
+
+    {
+      "id": "Q006",
+      "type": "lookup",
+      "title": "Taxa de Conversão por Fonte",
+      "description": "Encontre a taxa de conversão da fonte LinkedIn usando PROCV",
+      "formula_type": "PROCV", 
+      "difficulty": "medium",
+      "scenario_id": "techcorp_2024",
+      "instruction": "Busque na tabela de fontes a taxa de conversão do LinkedIn",
+      "table_data": {
+        "reference_table": {
+          "name": "Fontes de Recrutamento",
+          "headers": ["Fonte", "Custo Médio", "Tempo (dias)", "Taxa Conversão"],
+          "rows": [
+            ["LinkedIn", "500", "15", "0.35"],
+            ["InfoJobs", "200", "20", "0.25"],
+            ["Indicacao", "300", "10", "0.60"],
+            ["Site Empresa", "0", "25", "0.20"],
+            ["Universidade", "0", "30", "0.40"]
+          ]
+        },
+        "lookup_cell": "F2",
+        "formula_instruction": "Procure LinkedIn e retorne a taxa de conversão (coluna D)"
+      },
+      "expected_formula": "=PROCV(\"LinkedIn\";A1:D5;4;FALSO)",
+      "expected_result": 0.35,
+      "validation_type": "both",
+      "hints": [
+        "O valor procurado é 'LinkedIn'",
+        "A tabela vai de A1 até D5",
+        "Taxa de conversão está na 4ª coluna",
+        "Use FALSO para busca exata"
+      ],
+      "time_limit": 300,
+      "points": 20
+    },
+
+    {
+      "id": "Q007",
+      "type": "analysis",
+      "title": "Média de Pontuação por Etapa",
+      "description": "Calcule a pontuação média dos candidatos na etapa de entrevista",
+      "formula_type": "MEDIA",
+      "difficulty": "medium",
+      "scenario_id": "techcorp_2024",
+      "instruction": "Use MÉDIA para calcular a pontuação média de todos os candidatos na entrevista",
+      "table_data": {
+        "headers": ["Candidato", "Currículo", "Teste", "Entrevista"],
+        "rows": [
+          ["Maria Silva", "85", "78", "92"],
+          ["João Pedro", "75", "65", "70"], 
+          ["Ana Carolina", "90", "88", "95"],
+          ["Carlos Eduardo", "70", "75", "68"],
+          ["Fernanda Costa", "95", "85", "90"],
+          ["Ricardo Ferreira", "80", "72", "85"]
+        ],
+        "target_cell": "D7",
+        "formula_instruction": "Calcule a média da coluna D (Entrevista)"
+      },
+      "expected_formula": "=MEDIA(D1:D6)",
+      "expected_result": 83.33,
+      "validation_type": "both",
+      "hints": [
+        "MÉDIA calcula a média aritmética de um conjunto de números",
+        "Selecione todas as pontuações de entrevista",
+        "A sintaxe é: =MEDIA(range_de_células)"
+      ],
+      "time_limit": 180,
+      "points": 15
+    },
+
+    {
+      "id": "Q008",
+      "type": "analysis",
+      "title": "Tempo Médio de Contratação",
+      "description": "Calcule o tempo médio para contratação por fonte de recrutamento",
+      "formula_type": "MEDIA",
+      "difficulty": "medium", 
+      "scenario_id": "techcorp_2024",
+      "instruction": "Calcule o tempo médio (em dias) das fontes pagas de recrutamento",
+      "table_data": {
+        "headers": ["Fonte", "Tempo (dias)", "Custo", "É Paga?"],
+        "rows": [
+          ["LinkedIn", "15", "500", "Sim"],
+          ["InfoJobs", "20", "200", "Sim"],
+          ["Indicacao", "10", "300", "Sim"],
+          ["Site Empresa", "25", "0", "Não"],
+          ["Universidade", "30", "0", "Não"]
+        ],
+        "target_cell": "E2",
+        "formula_instruction": "Calcule a média apenas das fontes pagas (linhas 1, 2 e 3)"
+      },
+      "expected_formula": "=MEDIA(B1:B3)",
+      "expected_result": 15.00,
+      "validation_type": "both",
+      "hints": [
+        "Identifique quais fontes são pagas (têm custo > 0)",
+        "Calcule a média apenas dessas fontes",
+        "São 3 fontes: LinkedIn, InfoJobs e Indicação"
+      ],
+      "time_limit": 240,
+      "points": 15
+    },
+
+    {
+      "id": "Q009",
+      "type": "complex",
+      "title": "Análise de ROI por Vaga",
+      "description": "Combine fórmulas para calcular o ROI (Retorno sobre Investimento) de cada vaga",
+      "formula_type": "COMBINED",
+      "difficulty": "hard",
+      "scenario_id": "techcorp_2024",
+      "instruction": "Use SE + PROCV + SOMA para calcular: se vaga foi preenchida, ROI = (Salário_Anual - Custo_Recrutamento) / Custo_Recrutamento",
+      "table_data": {
+        "headers": ["Vaga", "Status", "Salário Base", "Custo Total", "ROI"],
+        "rows": [
+          ["V001", "Preenchida", "8000", "650", ""],
+          ["V002", "Preenchida", "4500", "1000", ""],
+          ["V003", "Aberta", "2200", "0", ""],
+          ["V004", "Preenchida", "6500", "2500", ""],
+          ["V005", "Aberta", "1200", "0", ""]
+        ],
+        "target_cell": "E1",
+        "formula_instruction": "Se status = 'Preenchida', calcule ROI, senão 'N/A'"
+      },
+      "expected_formula": "=SE(B1=\"Preenchida\";((C1*12)-D1)/D1;\"N/A\")",
+      "expected_result": 147.69,
+      "validation_type": "formula_structure",
+      "hints": [
+        "Use SE para verificar se status = 'Preenchida'",
+        "ROI = (Salário anual - Custo) / Custo",
+        "Salário anual = Salário base * 12 meses",
+        "Se não preenchida, retorne 'N/A'"
+      ],
+      "time_limit": 360,
+      "points": 25
+    },
+
+    {
+      "id": "Q010",
+      "type": "complex",
+      "title": "Relatório Executivo de Performance",
+      "description": "Crie uma análise completa combinando todas as fórmulas aprendidas",
+      "formula_type": "COMBINED",
+      "difficulty": "hard",
+      "scenario_id": "techcorp_2024",
+      "instruction": "Calcule a eficiência geral do R&S: média de aprovação SE pontuação>=240, PROCV taxa benchmark, SOMA custos totais",
+      "table_data": {
+        "main_table": {
+          "headers": ["Métrica", "Valor Atual", "Benchmark", "Status"],
+          "rows": [
+            ["Taxa Aprovacao", "", "30%", ""],
+            ["Custo Total", "", "15000", ""],
+            ["Tempo Medio", "", "25", ""],
+            ["Candidatos Aprovados", "", "", ""]
+          ]
+        },
+        "support_data": "Use dados das questões anteriores",
+        "target_cell": "B1",
+        "formula_instruction": "Calcule % de candidatos aprovados (pontuação>=240) do total"
+      },
+      "expected_formula": "=SOMA(SE(pontuacao>=240;1;0))/CONT.VALORES(candidatos)*100",
+      "expected_result": 50.00,
+      "validation_type": "concept",
+      "hints": [
+        "Combine conceitos de todas as fórmulas anteriores",
+        "Use SE para identificar aprovados",
+        "Use SOMA para contar total de aprovados", 
+        "Calcule percentual: aprovados/total*100",
+        "Esta é uma fórmula matricial complexa"
+      ],
+      "time_limit": 480,
+      "points": 30
+    }
+  ],
+
+  "scoring": {
+    "total_points": 175,
+    "grade_thresholds": {
+      "excellent": 140,
+      "good": 105,
+      "average": 70,
+      "poor": 35
+    },
+    "time_bonus": {
+      "description": "Bonus por completar antes do tempo",
+      "max_bonus": 25,
+      "calculation": "5 pontos por questão completada com mais de 30s restantes"
+    }
+  },
+
+  "formula_tracking": {
+    "SOMA": {
+      "questions": ["Q001", "Q002", "Q009"],
+      "weight": 0.25,
+      "description": "Somar valores, custos e totais"
+    },
+    "SE": {
+      "questions": ["Q003", "Q004", "Q009"], 
+      "weight": 0.25,
+      "description": "Decisões condicionais e classificações"
+    },
+    "PROCV": {
+      "questions": ["Q005", "Q006", "Q009"],
+      "weight": 0.25, 
+      "description": "Buscar dados em tabelas de referência"
+    },
+    "MEDIA": {
+      "questions": ["Q007", "Q008", "Q010"],
+      "weight": 0.25,
+      "description": "Calcular médias e análises estatísticas"
+    }
+  }
+}

@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Sistema de Atividades</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .auth-container {
+            max-width: 450px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .auth-header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .auth-header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+        
+        .auth-header p {
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+        
+        .professor-info {
+            background: rgba(255,255,255,0.1);
+            padding: 10px 20px;
+            border-radius: 25px;
+            display: inline-block;
+            backdrop-filter: blur(10px);
+        }
+        
+        .auth-content {
+            padding: 40px;
+        }
+        
+        .tab-buttons {
+            display: flex;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #e9ecef;
+        }
+        
+        .tab-btn {
+            flex: 1;
+            padding: 15px;
+            background: #f8f9fa;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-btn.active {
+            background: #3498db;
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52,152,219,0.1);
+        }
+        
+        .form-group select:disabled {
+            background-color: #f8f9fa;
+            color: #6c757d;
+            cursor: not-allowed;
+        }
+        
+        .field-info {
+            background: #e3f2fd;
+            border: 1px solid #bbdefb;
+            color: #1565c0;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            margin-top: 8px;
+        }
+        
+        .hidden-field {
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+        
+        .visible-field {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .password-strength {
+            margin-top: 5px;
+            height: 4px;
+            border-radius: 2px;
+            background: #e9ecef;
+            overflow: hidden;
+        }
+        
+        .password-strength-fill {
+            height: 100%;
+            width: 0%;
+            transition: all 0.3s ease;
+        }
+        
+        .strength-weak { background: #e74c3c; width: 33%; }
+        .strength-medium { background: #f39c12; width: 66%; }
+        .strength-strong { background: #27ae60; width: 100%; }
+        
+        .password-requirements {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+        
+        .requirement {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .requirement-icon {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            margin-right: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: white;
+        }
+        
+        .requirement-icon.met {
+            background: #27ae60;
+        }
+        
+        .requirement-icon.unmet {
+            background: #e74c3c;
+        }
+        
+        .terms-checkbox {
+            display: flex;
+            align-items: flex-start;
+            margin: 20px 0;
+            gap: 10px;
+        }
+        
+        .terms-checkbox input[type="checkbox"] {
+            margin-top: 3px;
+            width: auto;
+        }
+        
+        .terms-text {
+            font-size: 0.9em;
+            color: #6c757d;
+            line-height: 1.5;
+        }
+        
+        .terms-text a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        
+        .terms-text a:hover {
+            text-decoration: underline;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52,152,219,0.3);
+        }
+        
+        .btn:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .forgot-password {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .forgot-password a {
+            color: #3498db;
+            text-decoration: none;
+            font-size: 0.9em;
+        }
+        
+        .admin-access {
+            background: #2c3e50;
+            border: 1px solid #34495e;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .admin-access h4 {
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        .admin-access p {
+            color: #bdc3c7;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+        
+        .btn-admin {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: transform 0.2s ease;
+        }
+        
+        .btn-admin:hover {
+            transform: translateY(-2px);
+        }
+        
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            text-align: center;
+        }
+        
+        .message.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .message.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        .message.hidden {
+            display: none;
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .loading-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .back-to-hub {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .back-to-hub a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .back-to-hub a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .auth-container {
+                margin: 10px;
+                max-width: none;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .auth-content {
+                padding: 30px 20px;
+            }
+            
+            .auth-header {
+                padding: 25px 20px;
+            }
+            
+            .auth-header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-header">
+            <h1>Sistema de Atividades</h1>
+            <p>Acesso aos Laboratórios Virtuais</p>
+            <div class="professor-info">
+                <span>Professor Leandro Rodrigues</span>
+            </div>
+        </div>
+        
+        <div class="auth-content">
+            <!-- Botões de Aba -->
+            <div class="tab-buttons">
+                <button class="tab-btn active" onclick="switchTab('login')">Entrar</button>
+                <button class="tab-btn" onclick="switchTab('register')">Cadastrar</button>
+            </div>
+            
+            <!-- Mensagens -->
+            <div id="message" class="message hidden"></div>
+            
+            <!-- Aba de Login -->
+            <div id="login-tab" class="tab-content active">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">E-mail ou Matrícula:</label>
+                        <input type="text" id="loginEmail" name="email" placeholder="Digite seu e-mail ou matrícula" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="loginPassword">Senha:</label>
+                        <input type="password" id="loginPassword" name="password" placeholder="Digite sua senha" required>
+                    </div>
+                    
+                    <button type="submit" class="btn">Entrar no Sistema</button>
+                </form>
+                
+                <div class="forgot-password">
+                    <a href="#" onclick="showForgotPassword()">Esqueci minha senha</a>
+                </div>
+                
+                <!-- Acesso Admin -->
+                <div class="admin-access">
+                    <h4>Acesso Administrativo</h4>
+                    <p>Área restrita para professores e administradores</p>
+                    <button class="btn-admin" onclick="showAdminLogin()">Painel Administrativo</button>
+                </div>
+            </div>
+            
+            <!-- Aba de Cadastro -->
+            <div id="register-tab" class="tab-content">
+                <form id="registerForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">Nome:</label>
+                            <input type="text" id="firstName" name="firstName" placeholder="Nome" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="lastName">Sobrenome:</label>
+                            <input type="text" id="lastName" name="lastName" placeholder="Sobrenome" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="registerEmail">E-mail:</label>
+                        <input type="email" id="registerEmail" name="email" placeholder="seu.email@exemplo.com" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="registration">Matrícula:</label>
+                            <input type="text" id="registration" name="registration" placeholder="Sua matrícula" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="course">Curso:</label>
+                            <select id="course" name="course" required onchange="updateTurmaOptions()">
+                                <option value="">Selecione o curso</option>
+                                <option value="informatica">Informática</option>
+                                <option value="recursos_humanos">Recursos Humanos</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Campo Turma - aparece dinamicamente -->
+                    <div class="form-group full-width hidden-field" id="turmaGroup">
+                        <label for="turma">Turma:</label>
+                        <select id="turma" name="turma" required disabled>
+                            <option value="">Selecione primeiro o curso</option>
+                        </select>
+                        <div class="field-info" id="turmaInfo" style="display: none;">
+                            Selecione sua turma específica conforme o curso escolhido
+                        </div>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="registerPassword">Senha:</label>
+                        <input type="password" id="registerPassword" name="password" placeholder="Crie uma senha segura" required>
+                        <div class="password-strength">
+                            <div class="password-strength-fill" id="passwordStrengthFill"></div>
+                        </div>
+                        <div class="password-requirements" id="passwordRequirements">
+                            <div class="requirement">
+                                <div class="requirement-icon unmet" id="lengthReq">✗</div>
+                                <span>Pelo menos 8 caracteres</span>
+                            </div>
+                            <div class="requirement">
+                                <div class="requirement-icon unmet" id="upperReq">✗</div>
+                                <span>Uma letra maiúscula</span>
+                            </div>
+                            <div class="requirement">
+                                <div class="requirement-icon unmet" id="lowerReq">✗</div>
+                                <span>Uma letra minúscula</span>
+                            </div>
+                            <div class="requirement">
+                                <div class="requirement-icon unmet" id="numberReq">✗</div>
+                                <span>Um número</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="confirmPassword">Confirmar Senha:</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Digite a senha novamente" required>
+                    </div>
+                    
+                    <div class="terms-checkbox">
+                        <input type="checkbox" id="acceptTerms" name="acceptTerms" required>
+                        <label for="acceptTerms" class="terms-text">
+                            Eu concordo com os <a href="#" onclick="showTerms()">Termos de Uso</a> e a 
+                            <a href="#" onclick="showPrivacy()">Política de Privacidade</a> do sistema.
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn">Criar Conta</button>
+                </form>
+            </div>
+            
+            <div class="back-to-hub">
+                <a href="../index.html">← Voltar ao Hub de Atividades</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>Processando...</p>
+        </div>
+    </div>
+    
+    <script>
+        // Configuração das turmas por curso
+        const turmasPorCurso = {
+            'informatica': [
+                { value: '1_info', text: '1º Info' },
+                { value: '2_info_1', text: '2º Info 1' },
+                { value: '2_info_2', text: '2º Info 2' },
+                { value: '3_info_7', text: '3º Info 7' },
+                { value: '3_info_8', text: '3º Info 8' }
+            ],
+            'recursos_humanos': [
+                { value: '2_rh', text: '2º RH' }
+            ]
+        };
+        
+        // Verificar se usuário já está logado
+        document.addEventListener('DOMContentLoaded', function() {
+            checkExistingAuth();
+        });
+        
+        // Verificar se já existe autenticação ativa
+        async function checkExistingAuth() {
+            try {
+                const response = await fetch('auth.php?check');
+                const result = await response.json();
+                
+                if (result.authenticated) {
+                    // Usuário já logado, redirecionar
+                    showMessage('Você já está logado! Redirecionando...', 'success');
+                    setTimeout(() => {
+                        if (result.user.is_admin) {
+                            window.location.href = '../admin/index.php';
+                        } else {
+                            window.location.href = '../index.html';
+                        }
+                    }, 1500);
+                } else {
+                    // Focar no campo de login
+                    document.getElementById('loginEmail').focus();
+                }
+            } catch (error) {
+                console.error('Erro ao verificar autenticação:', error);
+                document.getElementById('loginEmail').focus();
+            }
+        }
+        
+        // Alternar entre abas
+        function switchTab(tab) {
+            // Atualizar botões
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`[onclick="switchTab('${tab}')"]`).classList.add('active');
+            
+            // Atualizar conteúdo
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(`${tab}-tab`).classList.add('active');
+            
+            clearMessage();
+            
+            // Focar no primeiro campo da aba ativa
+            setTimeout(() => {
+                if (tab === 'login') {
+                    document.getElementById('loginEmail').focus();
+                } else {
+                    document.getElementById('firstName').focus();
+                }
+            }, 100);
+        }
+        
+        // Atualizar opções de turma baseado no curso selecionado
+        function updateTurmaOptions() {
+            const courseSelect = document.getElementById('course');
+            const turmaSelect = document.getElementById('turma');
+            const turmaGroup = document.getElementById('turmaGroup');
+            const turmaInfo = document.getElementById('turmaInfo');
+            
+            const selectedCourse = courseSelect.value;
+            
+            // Limpar opções de turma
+            turmaSelect.innerHTML = '';
+            
+            if (selectedCourse && turmasPorCurso[selectedCourse]) {
+                // Mostrar campo de turma
+                turmaGroup.classList.remove('hidden-field');
+                turmaGroup.classList.add('visible-field');
+                turmaInfo.style.display = 'block';
+                
+                // Habilitar select de turma
+                turmaSelect.disabled = false;
+                
+                // Adicionar opção padrão
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = 'Selecione sua turma';
+                turmaSelect.appendChild(defaultOption);
+                
+                // Adicionar turmas do curso selecionado
+                turmasPorCurso[selectedCourse].forEach(turma => {
+                    const option = document.createElement('option');
+                    option.value = turma.value;
+                    option.textContent = turma.text;
+                    turmaSelect.appendChild(option);
+                });
+                
+                // Atualizar texto informativo
+                const courseText = selectedCourse === 'informatica' ? 'Informática' : 'Recursos Humanos';
+                turmaInfo.textContent = `Turmas disponíveis para ${courseText}`;
+                
+            } else {
+                // Ocultar campo de turma
+                turmaGroup.classList.remove('visible-field');
+                turmaGroup.classList.add('hidden-field');
+                turmaInfo.style.display = 'none';
+                
+                // Desabilitar e limpar select de turma
+                turmaSelect.disabled = true;
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = 'Selecione primeiro o curso';
+                turmaSelect.appendChild(defaultOption);
+            }
+        }
+        
+        // Validação de senha em tempo real
+        document.getElementById('registerPassword').addEventListener('input', function() {
+            const password = this.value;
+            const requirements = {
+                length: password.length >= 8,
+                upper: /[A-Z]/.test(password),
+                lower: /[a-z]/.test(password),
+                number: /\d/.test(password)
+            };
+            
+            // Atualizar indicadores visuais
+            updateRequirement('lengthReq', requirements.length);
+            updateRequirement('upperReq', requirements.upper);
+            updateRequirement('lowerReq', requirements.lower);
+            updateRequirement('numberReq', requirements.number);
+            
+            // Calcular força da senha
+            const strength = Object.values(requirements).filter(Boolean).length;
+            const strengthFill = document.getElementById('passwordStrengthFill');
+            
+            strengthFill.className = 'password-strength-fill';
+            if (strength >= 4) {
+                strengthFill.classList.add('strength-strong');
+            } else if (strength >= 2) {
+                strengthFill.classList.add('strength-medium');
+            } else if (strength >= 1) {
+                strengthFill.classList.add('strength-weak');
+            }
+        });
+        
+        function updateRequirement(id, met) {
+            const element = document.getElementById(id);
+            if (met) {
+                element.classList.remove('unmet');
+                element.classList.add('met');
+                element.textContent = '✓';
+            } else {
+                element.classList.remove('met');
+                element.classList.add('unmet');
+                element.textContent = '✗';
+            }
+        }
+        
+        // Formulário de login
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!email || !password) {
+                showMessage('Por favor, preencha todos os campos.', 'error');
+                return;
+            }
+            
+            showLoading(true);
+            
+            try {
+                const response = await fetch('auth.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'login',
+                        email: email,
+                        password: password
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage('Login realizado com sucesso! Redirecionando...', 'success');
+                    setTimeout(() => {
+                        if (result.user.is_admin) {
+                            window.location.href = '../admin/index.php';
+                        } else {
+                            window.location.href = '../index.html';
+                        }
+                    }, 1500);
+                } else {
+                    showMessage(result.message || 'Erro no login', 'error');
+                }
+            } catch (error) {
+                showMessage('Erro de conexão. Tente novamente.', 'error');
+            } finally {
+                showLoading(false);
+            }
+        });
+        
+        // Formulário de cadastro
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // Validações
+            if (data.password !== data.confirmPassword) {
+                showMessage('As senhas não coincidem.', 'error');
+                return;
+            }
+            
+            if (!data.course) {
+                showMessage('Por favor, selecione um curso.', 'error');
+                return;
+            }
+            
+            if (!data.turma) {
+                showMessage('Por favor, selecione uma turma.', 'error');
+                return;
+            }
+            
+            if (!document.getElementById('acceptTerms').checked) {
+                showMessage('Você deve aceitar os termos de uso.', 'error');
+                return;
+            }
+            
+            // Validar força da senha
+            const password = data.password;
+            const hasUpper = /[A-Z]/.test(password);
+            const hasLower = /[a-z]/.test(password);
+            const hasNumber = /\d/.test(password);
+            const hasLength = password.length >= 8;
+            
+            if (!hasUpper || !hasLower || !hasNumber || !hasLength) {
+                showMessage('A senha não atende aos requisitos mínimos.', 'error');
+                return;
+            }
+            
+            showLoading(true);
+            
+            try {
+                const response = await fetch('auth.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'register',
+                        ...data
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage('Conta criada com sucesso! Faça login para continuar.', 'success');
+                    setTimeout(() => {
+                        switchTab('login');
+                        document.getElementById('loginEmail').value = data.email;
+                    }, 2000);
+                } else {
+                    showMessage(result.message || 'Erro no cadastro', 'error');
+                    if (result.errors) {
+                        console.error('Erros de validação:', result.errors);
+                    }
+                }
+            } catch (error) {
+                showMessage('Erro de conexão. Tente novamente.', 'error');
+            } finally {
+                showLoading(false);
+            }
+        });
+        
+        // Mostrar login admin
+        function showAdminLogin() {
+            window.location.href = 'admin.html';
+        }
+        
+        // Funções utilitárias
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = message;
+            messageDiv.className = `message ${type}`;
+            messageDiv.classList.remove('hidden');
+            
+            if (type === 'success') {
+                setTimeout(() => {
+                    clearMessage();
+                }, 5000);
+            }
+        }
+        
+        function clearMessage() {
+            const messageDiv = document.getElementById('message');
+            messageDiv.classList.add('hidden');
+        }
+        
+        function showLoading(show) {
+            const overlay = document.getElementById('loadingOverlay');
+            overlay.style.display = show ? 'flex' : 'none';
+        }
+        
+        function showForgotPassword() {
+            alert('Sistema de recuperação de senha em desenvolvimento.\n\nEntre em contato com o Professor Leandro Rodrigues para redefinir sua senha.');
+        }
+        
+        function showTerms() {
+            alert('Termos de Uso:\n\n• Este sistema é para fins educacionais\n• Os dados são tratados com confidencialidade\n• É proibido compartilhar credenciais\n• Use o sistema de forma ética e responsável\n• Respeite os direitos autorais do conteúdo\n• Relate problemas técnicos imediatamente');
+        }
+        
+        function showPrivacy() {
+            alert('Política de Privacidade:\n\n• Coletamos apenas dados necessários para o funcionamento\n• Não compartilhamos dados com terceiros\n• Os dados são armazenados de forma segura\n• Logs são mantidos para auditoria\n• Você pode solicitar remoção dos seus dados\n• Senhas são criptografadas e nunca armazenadas em texto plano');
+        }
+        
+        // Atalhos de teclado
+        document.addEventListener('keydown', function(e) {
+            // Alt + L = focar no login
+            if (e.altKey && e.key === 'l') {
+                e.preventDefault();
+                switchTab('login');
+            }
+            // Alt + R = focar no registro
+            if (e.altKey && e.key === 'r') {
+                e.preventDefault();
+                switchTab('register');
+            }
+        });
+    </script>
+</body>
+</html>

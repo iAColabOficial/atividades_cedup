@@ -1,0 +1,60 @@
+# ===============================================
+# PAINEL ADMINISTRATIVO
+# Professor Leandro Rodrigues
+# .htaccess específico para /admin/
+# ===============================================
+
+# Página inicial padrão
+DirectoryIndex index.php
+
+# Não listar diretórios
+Options -Indexes
+
+# ===============================================
+# SEGURANÇA ADMIN
+# ===============================================
+
+# Proteger contra acesso direto a arquivos PHP sensíveis
+<Files "*.inc.php">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+# Headers de segurança
+<IfModule mod_headers.c>
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "DENY"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# ===============================================
+# REWRITE RULES PARA ADMIN
+# ===============================================
+
+RewriteEngine On
+
+# Redirecionar / para index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^$ index.php [L]
+
+# Permitir acesso aos arquivos PHP principais
+RewriteRule ^(index|export|reports|backup|settings)\.php$ - [L]
+
+# Bloquear acesso a outros arquivos PHP
+#RewriteRule \.php$ - [F]
+
+# ===============================================
+# OTIMIZAÇÃO
+# ===============================================
+
+# Charset UTF-8
+AddDefaultCharset UTF-8
+
+# Cache para recursos estáticos
+<IfModule mod_expires.c>
+    ExpiresActive on
+    ExpiresByType text/css "access plus 1 hour"
+    ExpiresByType application/javascript "access plus 1 hour"
+</IfModule>

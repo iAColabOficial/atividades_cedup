@@ -1,0 +1,196 @@
+# ===============================================
+# SISTEMA DE ATIVIDADES ACADÊMICAS
+# Professor Leandro Rodrigues
+# .htaccess principal - /atividades/
+# Versão atualizada - Incluindo R&S Lab
+# ===============================================
+
+# Página inicial
+DirectoryIndex index.html
+
+# Não listar diretórios
+Options -Indexes
+
+# ===============================================
+# SEGURANÇA GLOBAL
+# ===============================================
+
+# Proteger arquivos de configuração
+<FilesMatch "\.(htaccess|htpasswd|ini|log|sh|sql|conf|bak|backup)$">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>
+
+# Proteger config.php em qualquer pasta
+<Files "config.php">
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+# Proteger arquivos sensíveis
+<FilesMatch "(composer\.(json|lock)|package\.(json|lock)|\.env|\.git)">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>
+
+# Proteger pasta de logs
+<DirectoryMatch "logs">
+    Order Deny,Allow
+    Deny from all
+</DirectoryMatch>
+
+# Proteger pasta de backups
+<DirectoryMatch "backups">
+    Order Deny,Allow
+    Deny from all
+</DirectoryMatch>
+
+# Headers de segurança
+<IfModule mod_headers.c>
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+    
+    # CSP básico
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'"
+</IfModule>
+
+# ===============================================
+# REWRITE RULES - INCLUINDO R&S LAB
+# ===============================================
+
+RewriteEngine On
+
+# Redirecionar para HTTPS (se necessário)
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP_HOST} !^localhost$ [NC]
+RewriteCond %{HTTP_HOST} !^127\.0\.0\.1$ [NC]
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Permitir acesso a TODAS as pastas de módulos - ATUALIZADO
+RewriteRule ^(auth|admin|etica|der_quiz|rs_lab|config|assets|uploads)/ - [L]
+
+# Permitir arquivos PHP nas pastas de módulos - ATUALIZADO
+RewriteRule ^(auth|admin|etica|der_quiz|rs_lab)/.*\.php$ - [L]
+
+# Redirecionar admin/ para admin/index.php
+RewriteRule ^admin/?$ admin/index.php [L]
+
+# Permitir acesso direto aos arquivos HTML dos módulos
+RewriteRule ^(etica|der_quiz|rs_lab)/index\.html$ - [L]
+
+# Permitir arquivos JSON e recursos dos módulos
+RewriteRule ^(etica|der_quiz|rs_lab)/.*\.(json|css|js)$ - [L]
+
+# Bloquear acesso direto a arquivos PHP fora das pastas permitidas
+RewriteRule ^[^/]*\.php$ - [F]
+
+# ===============================================
+# CHARSET E MIME TYPES
+# ===============================================
+
+AddDefaultCharset UTF-8
+
+# Definir tipos MIME
+<IfModule mod_mime.c>
+    AddType application/javascript .js
+    AddType text/css .css
+    AddType application/json .json
+    AddType text/html .html
+    AddType image/svg+xml .svg
+</IfModule>
+
+# ===============================================
+# TRATAMENTO DE ERROS
+# ===============================================
+
+# Páginas de erro customizadas (opcional)
+# ErrorDocument 404 /atividades/errors/404.html
+# ErrorDocument 403 /atividades/errors/403.html
+# ErrorDocument 500 /atividades/errors/500.html
+
+# ===============================================
+# CACHE E OTIMIZAÇÃO
+# ===============================================
+
+# Compressão GZIP
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# Cache para arquivos estáticos
+<IfModule mod_expires.c>
+    ExpiresActive on
+    
+    # Arquivos de estilo e script
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    
+    # Imagens
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/jpg "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/svg+xml "access plus 1 month"
+    ExpiresByType image/ico "access plus 1 year"
+    ExpiresByType image/x-icon "access plus 1 year"
+    
+    # Fontes
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType application/font-woff "access plus 1 year"
+    
+    # JSON e dados
+    ExpiresByType application/json "access plus 1 day"
+    
+    # HTML (sem cache para páginas dinâmicas)
+    ExpiresByType text/html "access plus 0 seconds"
+</IfModule>
+
+# ===============================================
+# CONFIGURAÇÕES ADICIONAIS DE SEGURANÇA
+# ===============================================
+
+# Bloquear scripts maliciosos
+<IfModule mod_rewrite.c>
+    # Bloquear tentativas de SQL injection
+    RewriteCond %{QUERY_STRING} (union|select|insert|drop|delete|update|create|alter) [NC]
+    RewriteRule ^(.*)$ - [F,L]
+    
+    # Bloquear tentativas de XSS
+    RewriteCond %{QUERY_STRING} (<|%3C)script(>|%3E) [NC]
+    RewriteRule ^(.*)$ - [F,L]
+    
+    # Bloquear tentativas de inclusão de arquivos
+    RewriteCond %{QUERY_STRING} (\.\.\/|\.\.\\) [NC]
+    RewriteRule ^(.*)$ - [F,L]
+</IfModule>
+
+# Limitar tamanho do upload
+LimitRequestBody 10485760  # 10MB
+
+# ===============================================
+# COMENTÁRIOS SOBRE AS ATUALIZAÇÕES
+# ===============================================
+# 
+# PRINCIPAIS MUDANÇAS PARA R&S LAB:
+# 1. Adicionado 'rs_lab' às pastas permitidas (linha 57)
+# 2. Incluído 'rs_lab' nos arquivos PHP permitidos (linha 60)
+# 3. Permitido acesso direto ao index.html do rs_lab (linha 65)
+# 4. Adicionado suporte a arquivos .json, .css, .js dos módulos (linha 68)
+# 5. Mantida compatibilidade total com módulos existentes
+#
+# O módulo R&S Lab agora está totalmente integrado ao sistema
+# ===============================================

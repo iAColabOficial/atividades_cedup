@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Laboratório de Ética em TI</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .auth-container {
+            max-width: 450px;
+            margin: 50px auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .auth-header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .auth-content {
+            padding: 40px;
+        }
+        
+        .tab-buttons {
+            display: flex;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #e9ecef;
+        }
+        
+        .tab-btn {
+            flex: 1;
+            padding: 15px;
+            background: #f8f9fa;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-btn.active {
+            background: #3498db;
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .password-strength {
+            margin-top: 5px;
+            height: 4px;
+            border-radius: 2px;
+            background: #e9ecef;
+            overflow: hidden;
+        }
+        
+        .password-strength-fill {
+            height: 100%;
+            width: 0%;
+            transition: all 0.3s ease;
+        }
+        
+        .strength-weak { background: #e74c3c; width: 33%; }
+        .strength-medium { background: #f39c12; width: 66%; }
+        .strength-strong { background: #27ae60; width: 100%; }
+        
+        .password-requirements {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+        
+        .requirement {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .requirement-icon {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            margin-right: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: white;
+        }
+        
+        .requirement-icon.met {
+            background: #27ae60;
+        }
+        
+        .requirement-icon.unmet {
+            background: #e74c3c;
+        }
+        
+        .terms-checkbox {
+            display: flex;
+            align-items: flex-start;
+            margin: 20px 0;
+            gap: 10px;
+        }
+        
+        .terms-checkbox input[type="checkbox"] {
+            margin-top: 3px;
+        }
+        
+        .terms-text {
+            font-size: 0.9em;
+            color: #6c757d;
+            line-height: 1.5;
+        }
+        
+        .terms-text a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        
+        .terms-text a:hover {
+            text-decoration: underline;
+        }
+        
+        .forgot-password {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .forgot-password a {
+            color: #3498db;
+            text-decoration: none;
+            font-size: 0.9em;
+        }
+        
+        .admin-access {
+            background: #2c3e50;
+            border: 1px solid #34495e;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .admin-access h4 {
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        .admin-access p {
+            color: #bdc3c7;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+        
+        .btn-admin {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: transform 0.2s ease;
+        }
+        
+        .btn-admin:hover {
+            transform: translateY(-2px);
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .loading-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .auth-container {
+                margin: 20px;
+                max-width: none;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .auth-content {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-header">
+            <h1>🎯 Laboratório de Ética</h1>
+            <p>Tecnologia da Informação</p>
+            <div class="professor-info">
+                <span>👨‍🏫 Professor Leandro Rodrigues</span>
+            </div>
+        </div>
+        
+        <div class="auth-content">
+            <!-- Botões de Aba -->
+            <div class="tab-buttons">
+                <button class="tab-btn active" onclick="switchTab('login')">Entrar</button>
+                <button class="tab-btn" onclick="switchTab('register')">Cadastrar</button>
+            </div>
+            
+            <!-- Mensagens -->
+            <div id="message" class="message hidden"></div>
+            
+            <!-- Aba de Login -->
+            <div id="login-tab" class="tab-content active">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">E-mail ou Matrícula:</label>
+                        <input type="text" id="loginEmail" name="email" placeholder="Digite seu e-mail ou matrícula" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="loginPassword">Senha:</label>
+                        <input type="password" id="loginPassword" name="password" placeholder="Digite sua senha" required>
+                    </div>
+                    
+                    <button type="submit" class="btn">Entrar no Laboratório</button>
+                </form>
+                
+                <div class="forgot-password">
+                    <a href="#" onclick="showForgotPassword()">Esqueci minha senha</a>
+                </div>
+                
+                <!-- Acesso Admin -->
+                <div class="admin-access">
+                    <h4>🔧 Acesso Administrativo</h4>
+                    <p>Área restrita para professores e administradores</p>
+                    <button class="btn-admin" onclick="showAdminLogin()">Acessar Painel Admin</button>
+                </div>
+            </div>
+            
+            <!-- Aba de Cadastro -->
+            <div id="register-tab" class="tab-content">
+                <form id="registerForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">Nome:</label>
+                            <input type="text" id="firstName" name="firstName" placeholder="Nome" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="lastName">Sobrenome:</label>
+                            <input type="text" id="lastName" name="lastName" placeholder="Sobrenome" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="registerEmail">E-mail:</label>
+                        <input type="email" id="registerEmail" name="email" placeholder="seu.email@exemplo.com" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="registration">Matrícula:</label>
+                            <input type="text" id="registration" name="registration" placeholder="Sua matrícula" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="course">Curso:</label>
+                            <select id="course" name="course" required>
+                                <option value="">Selecione</option>
+                                <option value="informatica">Informática</option>
+                                <option value="sistemas">Sistemas de Informação</option>
+                                <option value="redes">Redes de Computadores</option>
+                                <option value="seguranca">Segurança da Informação</option>
+                                <option value="outro">Outro</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="registerPassword">Senha:</label>
+                        <input type="password" id="registerPassword" name="password" placeholder="Crie uma senha segura" required>
+                        <div class="password-strength">
+                            <div class="password-strength-fill" id="passwordStrengthFill"></div>
+                        </div>
+                        <div class="password-requirements" id="passwordRequirements">
+                            <div class="requirement">
+                                <div class="requirement-icon unmet" id="lengthReq">✗</div>
+                                <span>Pelo menos 8 caracteres</span>
+                            </div>
+                            <div class="requirement">
+                                <div class="requirement-icon unmet" id="upperReq">✗</div>
+                                <span>Uma letra maiúscula</span>
+                            </div>
+                            <div class="requirement">
+                                <div class="requirement-icon unmet" id="lowerReq">✗</div>
+                                <span>Uma letra minúscula</span>
+                            </div>
+                            <div class="requirement">
+                                <div class="requirement-icon unmet" id="numberReq">✗</div>
+                                <span>Um número</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="confirmPassword">Confirmar Senha:</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Digite a senha novamente" required>
+                    </div>
+                    
+                    <div class="terms-checkbox">
+                        <input type="checkbox" id="acceptTerms" name="acceptTerms" required>
+                        <label for="acceptTerms" class="terms-text">
+                            Eu concordo com os <a href="#" onclick="showTerms()">Termos de Uso</a> e a 
+                            <a href="#" onclick="showPrivacy()">Política de Privacidade</a> do sistema.
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn">Criar Conta</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>Processando...</p>
+        </div>
+    </div>
+    
+    <script>
+        // Variáveis globais
+        let currentTab = 'login';
+        
+        // Alternar entre abas
+        function switchTab(tab) {
+            // Atualizar botões
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`[onclick="switchTab('${tab}')"]`).classList.add('active');
+            
+            // Atualizar conteúdo
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(`${tab}-tab`).classList.add('active');
+            
+            currentTab = tab;
+            clearMessage();
+        }
+        
+        // Validação de senha em tempo real
+        document.getElementById('registerPassword').addEventListener('input', function() {
+            const password = this.value;
+            const requirements = {
+                length: password.length >= 8,
+                upper: /[A-Z]/.test(password),
+                lower: /[a-z]/.test(password),
+                number: /\d/.test(password)
+            };
+            
+            // Atualizar indicadores visuais
+            updateRequirement('lengthReq', requirements.length);
+            updateRequirement('upperReq', requirements.upper);
+            updateRequirement('lowerReq', requirements.lower);
+            updateRequirement('numberReq', requirements.number);
+            
+            // Calcular força da senha
+            const strength = Object.values(requirements).filter(Boolean).length;
+            const strengthFill = document.getElementById('passwordStrengthFill');
+            
+            strengthFill.className = 'password-strength-fill';
+            if (strength >= 4) {
+                strengthFill.classList.add('strength-strong');
+            } else if (strength >= 2) {
+                strengthFill.classList.add('strength-medium');
+            } else if (strength >= 1) {
+                strengthFill.classList.add('strength-weak');
+            }
+        });
+        
+        function updateRequirement(id, met) {
+            const element = document.getElementById(id);
+            if (met) {
+                element.classList.remove('unmet');
+                element.classList.add('met');
+                element.textContent = '✓';
+            } else {
+                element.classList.remove('met');
+                element.classList.add('unmet');
+                element.textContent = '✗';
+            }
+        }
+        
+        // Formulário de login
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!email || !password) {
+                showMessage('Por favor, preencha todos os campos.', 'error');
+                return;
+            }
+            
+            showLoading(true);
+            
+            try {
+                const response = await fetch('auth.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'login',
+                        email: email,
+                        password: password
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage('Login realizado com sucesso! Redirecionando...', 'success');
+                    setTimeout(() => {
+                        if (result.user.is_admin) {
+                            window.location.href = 'admin.php';
+                        } else {
+                            window.location.href = 'index.html';
+                        }
+                    }, 1500);
+                } else {
+                    showMessage(result.message || 'Erro no login', 'error');
+                }
+            } catch (error) {
+                showMessage('Erro de conexão. Tente novamente.', 'error');
+            } finally {
+                showLoading(false);
+            }
+        });
+        
+        // Formulário de cadastro
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // Validações
+            if (data.password !== data.confirmPassword) {
+                showMessage('As senhas não coincidem.', 'error');
+                return;
+            }
+            
+            if (!document.getElementById('acceptTerms').checked) {
+                showMessage('Você deve aceitar os termos de uso.', 'error');
+                return;
+            }
+            
+            // Validar força da senha
+            const password = data.password;
+            const hasUpper = /[A-Z]/.test(password);
+            const hasLower = /[a-z]/.test(password);
+            const hasNumber = /\d/.test(password);
+            const hasLength = password.length >= 8;
+            
+            if (!hasUpper || !hasLower || !hasNumber || !hasLength) {
+                showMessage('A senha não atende aos requisitos mínimos.', 'error');
+                return;
+            }
+            
+            showLoading(true);
+            
+            try {
+                const response = await fetch('auth.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'register',
+                        ...data
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage('Conta criada com sucesso! Faça login para continuar.', 'success');
+                    setTimeout(() => {
+                        switchTab('login');
+                        document.getElementById('loginEmail').value = data.email;
+                    }, 2000);
+                } else {
+                    showMessage(result.message || 'Erro no cadastro', 'error');
+                }
+            } catch (error) {
+                showMessage('Erro de conexão. Tente novamente.', 'error');
+            } finally {
+                showLoading(false);
+            }
+        });
+        
+        // Mostrar login admin
+        function showAdminLogin() {
+            const email = prompt('Digite o login do administrador:');
+            const password = prompt('Digite a senha do administrador:');
+            
+            if (email && password) {
+                loginAsAdmin(email, password);
+            }
+        }
+        
+        // Login como admin
+        async function loginAsAdmin(email, password) {
+            showLoading(true);
+            
+            try {
+                const response = await fetch('auth.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        action: 'admin_login',
+                        email: email,
+                        password: password
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage('Login administrativo realizado! Redirecionando...', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'admin.php';
+                    }, 1500);
+                } else {
+                    showMessage('Credenciais administrativas inválidas.', 'error');
+                }
+            } catch (error) {
+                showMessage('Erro de conexão. Tente novamente.', 'error');
+            } finally {
+                showLoading(false);
+            }
+        }
+        
+        // Funções utilitárias
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = message;
+            messageDiv.className = `message ${type}`;
+            messageDiv.classList.remove('hidden');
+            
+            if (type === 'success') {
+                setTimeout(() => {
+                    clearMessage();
+                }, 5000);
+            }
+        }
+        
+        function clearMessage() {
+            const messageDiv = document.getElementById('message');
+            messageDiv.classList.add('hidden');
+        }
+        
+        function showLoading(show) {
+            const overlay = document.getElementById('loadingOverlay');
+            overlay.style.display = show ? 'flex' : 'none';
+        }
+        
+        function showForgotPassword() {
+            alert('Sistema de recuperação de senha em desenvolvimento.\nEntre em contato com o Professor Leandro Rodrigues.');
+        }
+        
+        function showTerms() {
+            alert('Termos de Uso:\n\n• Este sistema é para fins educacionais\n• Os dados são tratados com confidencialidade\n• É proibido compartilhar credenciais\n• Use o sistema de forma ética e responsável');
+        }
+        
+        function showPrivacy() {
+            alert('Política de Privacidade:\n\n• Coletamos apenas dados necessários para o funcionamento\n• Não compartilhamos dados com terceiros\n• Os dados são armazenados de forma segura\n• Você pode solicitar remoção dos seus dados');
+        }
+        
+        // Auto-focus no primeiro campo
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('loginEmail').focus();
+        });
+    </script>
+</body>
+</html>
